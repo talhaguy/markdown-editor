@@ -1,0 +1,31 @@
+{
+  "name": "markdown-editor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf dist",
+    "build:renderer": "parcel build ./src/index.html --public-url ./",
+    "build:main": "parcel build ./src/index.ts --target node",
+    "build": "npm run build:renderer && npm run build:main",
+    "watch": "parcel ./src/index.html --no-hmr --public-url ./",
+    "start": "npm run build:main && electron ./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talhaguy/markdown-editor.git"
+  },
+  "author": "Muhammad Talha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/talhaguy/markdown-editor/issues"
+  },
+  "homepage": "https://github.com/talhaguy/markdown-editor#readme",
+  "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "electron": "^10.0.0",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^4.0.2"
+  }
+}
