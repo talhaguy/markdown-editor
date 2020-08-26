@@ -1,9 +1,10 @@
-import * as React from "react"
+import React, { useContext, useEffect } from "react"
 import styled from "styled-components"
 import { Editor } from "./Editor"
 import { AppTitle } from "./AppTitle"
 import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
+import { MainToRendererApiContext } from "../providers"
 
 const Container = styled.div`
     display: flex;
@@ -18,6 +19,14 @@ const RightColumn = styled.div`
 `
 
 export function App() {
+    // TODO: choose a folder to open
+
+    const MainToRendererApi = useContext(MainToRendererApiContext)
+
+    useEffect(() => {
+        MainToRendererApi.test().then((d) => console.log(d))
+    }, [])
+
     return (
         <Container>
             <LeftColumn>
