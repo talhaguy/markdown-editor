@@ -1,13 +1,26 @@
 import * as React from "react"
+import styled from "styled-components"
 import { Editor } from "./Editor"
 import { AppTitle } from "./AppTitle"
 import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
 
+const Container = styled.div`
+    display: flex;
+`
+
+const LeftColumn = styled.div`
+    width: 265px;
+`
+
+const RightColumn = styled.div`
+    flex-grow: 1;
+`
+
 export function App() {
     return (
-        <div className="app">
-            <div>
+        <Container>
+            <LeftColumn>
                 <div>
                     <AppTitle />
                 </div>
@@ -17,10 +30,10 @@ export function App() {
                 <div>
                     <NoteList />
                 </div>
-            </div>
-            <div>
+            </LeftColumn>
+            <RightColumn>
                 <Editor />
-            </div>
-        </div>
+            </RightColumn>
+        </Container>
     )
 }
