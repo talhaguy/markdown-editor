@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useState } from "react"
 import styled from "styled-components"
 import { Editor } from "./Editor"
 import { AppTitle } from "./AppTitle"
@@ -19,13 +19,35 @@ const RightColumn = styled.div`
 `
 
 export function App() {
-    // TODO: choose a folder to open
+    const [folderPath, setFolderPath] = useState(null)
+    const [notes, setNotes] = useState([])
 
-    const MainToRendererApi = useContext(MainToRendererApiContext)
+    const { selectFolder, getNotesInFolder } = useContext(
+        MainToRendererApiContext
+    )
 
-    useEffect(() => {
-        MainToRendererApi.test().then((d) => console.log(d))
-    }, [])
+    const chooseFolder = () => {
+        selectFolder()
+            .then((folderPath) => {
+                console.log("chosen folder", folderPath)
+                setFolderPath(folderPath)
+                getNotesInDirectory(folderPath)
+            })
+            .catch(() => {
+                console.log("canceled")
+            })
+    }
+
+    const getNotesInDirectory = (path) => {
+        getNotesInFolder(path)
+            .then((files) => {
+                console.log(files)
+                setNotes(files)
+            })
+            .catch((e) => {
+                console.log("error getting notes")
+            })
+    }
 
     return (
         <Container>
@@ -34,10 +56,13 @@ export function App() {
                     <AppTitle />
                 </div>
                 <div>
-                    <Controls />
+                    <Controls
+                        chooseFolder={chooseFolder}
+                        folderName={folderPath}
+                    />
                 </div>
                 <div>
-                    <NoteList />
+                    <NoteList notes={notes} />
                 </div>
             </LeftColumn>
             <RightColumn>

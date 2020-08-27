@@ -1,5 +1,21 @@
 import React from "react"
 
-export function NoteList() {
-    return <>NoteList</>
+interface NoteListProps {
+    notes: string[]
+}
+
+export function NoteList({ notes }: NoteListProps) {
+    return (
+        <>
+            {notes.length > 0 ? (
+                <ul>
+                    {notes.map((note, i) => (
+                        <li key={i}>note</li>
+                    ))}
+                </ul>
+            ) : (
+                <span>No notes</span>
+            )}
+        </>
+    )
 }

@@ -1,5 +1,14 @@
-import { app, BrowserWindow } from "electron"
+import {
+    app,
+    BrowserWindow,
+    ipcMain,
+    dialog,
+    Dialog,
+    IpcMainEvent,
+} from "electron"
 import path from "path"
+import { IPCEvent } from "../shared"
+import { promises as fs } from "fs"
 
 console.log("main...", path.join(__dirname, "preload.js"))
 
@@ -45,3 +54,28 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+function onSelectFolderStart(dialog: Dialog, event: IpcMainEvent) {
+    dialog
+        .showOpenDialog({
+            properties: ["openDirectory"],
+            message: "Choose a folder",
+        })
+        .then((value) => {
+            if (!value.canceled) {
+                event.sender.send(
+                    IPCEvent.SelectFolderSuccess,
+                    value.filePaths[0]
+                )
+                return
+            }
+            event.sender.send(IPCEvent.SelectFolderCancel)
+        })
+}
+
+ipcMain.on(
+    IPCEvent.SelectFolderStart,
+    ((dialog) => (event: IpcMainEvent) => onSelectFolderStart(dialog, event))(
+        dialog
+    )
+)
