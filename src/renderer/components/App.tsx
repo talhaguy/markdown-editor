@@ -22,7 +22,7 @@ export function App() {
     const [folderPath, setFolderPath] = useState(null)
     const [notes, setNotes] = useState([])
 
-    const { selectFolder, getNotesInFolder } = useContext(
+    const { selectFolder, getNotesInFolder, createNewNote } = useContext(
         MainToRendererApiContext
     )
 
@@ -49,6 +49,18 @@ export function App() {
             })
     }
 
+    const createNewNoteFile = () => {
+        createNewNote(folderPath)
+            .then(() => {
+                console.log("done creating note")
+            })
+            .catch(() => {
+                console.log("could not create note")
+            })
+
+        getNotesInDirectory(folderPath)
+    }
+
     return (
         <Container>
             <LeftColumn>
@@ -59,6 +71,7 @@ export function App() {
                     <Controls
                         chooseFolder={chooseFolder}
                         folderName={folderPath}
+                        createNewNote={createNewNoteFile}
                     />
                 </div>
                 <div>
