@@ -12,9 +12,15 @@ export function NoteList({ notes }: NoteListProps) {
                 <ul>
                     {notes.map((note, i) => (
                         <li key={i}>
-                            {note.title}
+                            {note.title ? note.title : "N/A"}
                             <br />
-                            {note.preview}
+                            {note.preview ? note.preview : "N/A"}
+                            <br />
+                            {note.lastModifiedDate
+                                ? new Date(
+                                      note.lastModifiedDate
+                                  ).toLocaleString()
+                                : "N/A"}
                         </li>
                     ))}
                 </ul>

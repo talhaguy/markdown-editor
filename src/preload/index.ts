@@ -52,7 +52,6 @@ function _getLinesOfFile(
         rl.on("line", (line) => {
             if (lines.length < numLines) {
                 if (line.trim() !== "") {
-                    console.log("got a line...", line)
                     lines.push(line)
                 }
             }
@@ -82,8 +81,29 @@ function getNotesInFolder(
         const markdownFiles = files.filter((file) => file.indexOf(".md") > -1)
 
         return new Promise<NoteListMap>((res, rej) => {
+            let numNotesDataCompleted = 0
+
+            const incrementNumNotesDataCompleted = (
+                noteListMap: NoteListMap,
+                id: string
+            ) => {
+                if (
+                    noteListMap[id].title !== null &&
+                    noteListMap[id].preview !== null &&
+                    noteListMap[id].lastModifiedDate
+                ) {
+                    numNotesDataCompleted += 1
+                }
+            }
+
+            const resolvePromiseIfDataComplete = (noteListMap: NoteListMap) => {
+                // if all files have data collected, fullfill promise
+                if (markdownFiles.length === numNotesDataCompleted) {
+                    res(noteListMap)
+                }
+            }
+
             if (markdownFiles.length > 0) {
-                let numNotesRead = 0
                 let noteListMap: NoteListMap = {}
                 markdownFiles.forEach((mdFileName) => {
                     noteListMap[mdFileName] = {
@@ -95,12 +115,9 @@ function getNotesInFolder(
                 })
 
                 markdownFiles.forEach((mdFileName) => {
-                    getLinesOfFile(
-                        nodePath.join(folderPath, mdFileName),
-                        2
-                    ).then((lines) => {
-                        numNotesRead += 1
+                    const filePath = nodePath.join(folderPath, mdFileName)
 
+                    getLinesOfFile(filePath, 2).then((lines) => {
                         noteListMap[mdFileName].title = lines[0]
                             ? lines[0].slice(0, 20) + "..."
                             : "N/A"
@@ -108,10 +125,17 @@ function getNotesInFolder(
                             ? lines[1].slice(0, 20) + "..."
                             : ""
 
-                        // if all files have been read, fullfill promise
-                        if (markdownFiles.length === numNotesRead) {
-                            res(noteListMap)
-                        }
+                        incrementNumNotesDataCompleted(noteListMap, mdFileName)
+                        resolvePromiseIfDataComplete(noteListMap)
+                    })
+
+                    nodeFsPromises.stat(filePath).then(({ mtime }) => {
+                        noteListMap[
+                            mdFileName
+                        ].lastModifiedDate = mtime.getTime()
+
+                        incrementNumNotesDataCompleted(noteListMap, mdFileName)
+                        resolvePromiseIfDataComplete(noteListMap)
                     })
                 })
             }
