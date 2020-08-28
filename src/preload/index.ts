@@ -1,14 +1,15 @@
-import { promises as fs } from "fs"
+import fs, { promises as fsPromises } from "fs"
 import path from "path"
 import { ipcRenderer, IpcRenderer, IpcRendererEvent } from "electron"
 import chokidar from "chokidar"
-import { IPCEvent } from "../shared"
+import { IPCEvent, NoteListMap } from "../shared"
+import readline from "readline"
 
 console.log("preload js")
 
 export interface MainToRendererApiMap {
     selectFolder: () => Promise<string>
-    getNotesInFolder: (folderPath: string) => Promise<string[]>
+    getNotesInFolder: (folderPath: string) => Promise<NoteListMap>
     createNewNote: (folderPath: string) => Promise<void>
     startNotesWatch: (folderPath: string) => void
 }
@@ -34,10 +35,72 @@ function selectFolder(ipcRenderer: IpcRenderer) {
     })
 }
 
-function getNotesInFolder(nodeFsPromises: typeof fs, folderPath: string) {
+function _getFirstLineOfFile(
+    nodeReadline: typeof readline,
+    nodeFs: typeof fs,
+    pathToFile: string
+) {
+    return new Promise<string>((res, rej) => {
+        const rl = nodeReadline.createInterface({
+            input: nodeFs.createReadStream(pathToFile),
+            output: process.stdout,
+            terminal: false,
+        })
+
+        let wasLineRead = false // rl.close() doesn't close immediately, so need this to check
+        rl.on("line", (line) => {
+            if (!wasLineRead) {
+                console.log("got a line...", line)
+                res(line)
+                wasLineRead = true
+                rl.close()
+            }
+        })
+
+        // TODO: rl error handling
+    })
+}
+
+const getFirstLineOfFile = ((readline, fs) => (pathToFile) =>
+    _getFirstLineOfFile(readline, fs, pathToFile))(readline, fs)
+
+function getNotesInFolder(
+    nodeFsPromises: typeof fsPromises,
+    nodePath: typeof path,
+    folderPath: string
+) {
     return nodeFsPromises.readdir(folderPath).then((files) => {
         const markdownFiles = files.filter((file) => file.indexOf(".md") > -1)
-        return markdownFiles
+
+        return new Promise<NoteListMap>((res, rej) => {
+            if (markdownFiles.length > 0) {
+                let numNotesRead = 0
+                let noteListMap: NoteListMap = {}
+                markdownFiles.forEach((mdFileName) => {
+                    noteListMap[mdFileName] = {
+                        id: mdFileName,
+                        title: null,
+                        preview: null,
+                        lastModifiedDate: null,
+                    }
+                })
+
+                markdownFiles.forEach((mdFileName) => {
+                    getFirstLineOfFile(
+                        nodePath.join(folderPath, mdFileName)
+                    ).then((line) => {
+                        numNotesRead += 1
+                        noteListMap[mdFileName].preview =
+                            line.slice(0, 20) + "..."
+
+                        // if all files have been read, fullfill promise
+                        if (markdownFiles.length === numNotesRead) {
+                            res(noteListMap)
+                        }
+                    })
+                })
+            }
+        })
     })
 }
 
@@ -67,7 +130,7 @@ function createNoteFileName() {
 }
 
 function createNewNote(
-    nodeFsPromises: typeof fs,
+    nodeFsPromises: typeof fsPromises,
     nodePath: typeof path,
     folderPath: string
 ) {
@@ -105,10 +168,10 @@ const MainToRendererApi: MainToRendererApiMap = {
     selectFolder: ((ipcRenderer) => () => selectFolder(ipcRenderer))(
         ipcRenderer
     ),
-    getNotesInFolder: ((fs) => (folderPath) =>
-        getNotesInFolder(fs, folderPath))(fs),
-    createNewNote: ((fs, path) => (folderPath) =>
-        createNewNote(fs, path, folderPath))(fs, path),
+    getNotesInFolder: ((fsPromises, path) => (folderPath) =>
+        getNotesInFolder(fsPromises, path, folderPath))(fsPromises, path),
+    createNewNote: ((fsPromises, path) => (folderPath) =>
+        createNewNote(fsPromises, path, folderPath))(fsPromises, path),
     startNotesWatch: ((chokidar, path) => (folderPath) =>
         startNotesWatch(chokidar, path, folderPath))(chokidar, path),
 }

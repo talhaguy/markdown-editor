@@ -5,6 +5,7 @@ import { AppTitle } from "./AppTitle"
 import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
 import { MainToRendererApiContext } from "../providers"
+import { NoteListItem } from "../../shared"
 
 const Container = styled.div`
     display: flex;
@@ -20,7 +21,7 @@ const RightColumn = styled.div`
 
 export function App() {
     const [folderPath, setFolderPath] = useState(null)
-    const [notes, setNotes] = useState([])
+    const [notes, setNotes] = useState<NoteListItem[]>([])
 
     const {
         selectFolder,
@@ -43,9 +44,9 @@ export function App() {
 
     const getNotesInDirectory = (path) => {
         getNotesInFolder(path)
-            .then((files) => {
-                console.log(files)
-                setNotes(files)
+            .then((notesListMap) => {
+                console.log(notesListMap)
+                setNotes(Object.values(notesListMap))
             })
             .catch((e) => {
                 console.log("error getting notes")
