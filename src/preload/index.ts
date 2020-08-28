@@ -1,6 +1,7 @@
 import { promises as fs } from "fs"
 import path from "path"
 import { ipcRenderer, IpcRenderer, IpcRendererEvent } from "electron"
+import chokidar from "chokidar"
 import { IPCEvent } from "../shared"
 
 console.log("preload js")
@@ -9,6 +10,7 @@ export interface MainToRendererApiMap {
     selectFolder: () => Promise<string>
     getNotesInFolder: (folderPath: string) => Promise<string[]>
     createNewNote: (folderPath: string) => Promise<void>
+    startNotesWatch: (folderPath: string) => void
 }
 
 function selectFolder(ipcRenderer: IpcRenderer) {
@@ -76,6 +78,29 @@ function createNewNote(
     })
 }
 
+function startNotesWatch(
+    chokidarLib: typeof chokidar,
+    nodePath: typeof path,
+    folderPath: string
+) {
+    // TODO: remove listener on previous folder; maybe return an unsub obj with method to unsub
+    const watcher = chokidarLib
+        .watch(nodePath.join(folderPath, "*.md"))
+        .on("ready", () => {
+            console.log("Initial scan complete. Ready for changes")
+
+            watcher.on("add", (path) =>
+                console.log(`File ${path} has been added`)
+            )
+            watcher.on("change", (path) =>
+                console.log(`File ${path} has been changed`)
+            )
+            watcher.on("unlink", (path) =>
+                console.log(`File ${path} has been removed`)
+            )
+        })
+}
+
 const MainToRendererApi: MainToRendererApiMap = {
     selectFolder: ((ipcRenderer) => () => selectFolder(ipcRenderer))(
         ipcRenderer
@@ -84,6 +109,8 @@ const MainToRendererApi: MainToRendererApiMap = {
         getNotesInFolder(fs, folderPath))(fs),
     createNewNote: ((fs, path) => (folderPath) =>
         createNewNote(fs, path, folderPath))(fs, path),
+    startNotesWatch: ((chokidar, path) => (folderPath) =>
+        startNotesWatch(chokidar, path, folderPath))(chokidar, path),
 }
 
 ;(window as any)._MainToRendererApi = MainToRendererApi

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import styled from "styled-components"
 import { Editor } from "./Editor"
 import { AppTitle } from "./AppTitle"
@@ -22,9 +22,12 @@ export function App() {
     const [folderPath, setFolderPath] = useState(null)
     const [notes, setNotes] = useState([])
 
-    const { selectFolder, getNotesInFolder, createNewNote } = useContext(
-        MainToRendererApiContext
-    )
+    const {
+        selectFolder,
+        getNotesInFolder,
+        createNewNote,
+        startNotesWatch,
+    } = useContext(MainToRendererApiContext)
 
     const chooseFolder = () => {
         selectFolder()
@@ -60,6 +63,13 @@ export function App() {
 
         getNotesInDirectory(folderPath)
     }
+
+    useEffect(() => {
+        if (folderPath) {
+            console.log("got folder path, start watch")
+            startNotesWatch(folderPath)
+        }
+    }, [folderPath])
 
     return (
         <Container>
