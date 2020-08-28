@@ -11,7 +11,11 @@ export function NoteList({ notes }: NoteListProps) {
             {notes.length > 0 ? (
                 <ul>
                     {notes.map((note, i) => (
-                        <li key={i}>{note.preview}</li>
+                        <li key={i}>
+                            {note.title}
+                            <br />
+                            {note.preview}
+                        </li>
                     ))}
                 </ul>
             ) : (

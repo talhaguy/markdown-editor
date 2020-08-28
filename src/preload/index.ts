@@ -35,34 +35,43 @@ function selectFolder(ipcRenderer: IpcRenderer) {
     })
 }
 
-function _getFirstLineOfFile(
+function _getLinesOfFile(
     nodeReadline: typeof readline,
     nodeFs: typeof fs,
-    pathToFile: string
+    pathToFile: string,
+    numLines: number
 ) {
-    return new Promise<string>((res, rej) => {
+    return new Promise<string[]>((res, rej) => {
         const rl = nodeReadline.createInterface({
             input: nodeFs.createReadStream(pathToFile),
             output: process.stdout,
             terminal: false,
         })
 
-        let wasLineRead = false // rl.close() doesn't close immediately, so need this to check
+        let lines = []
         rl.on("line", (line) => {
-            if (!wasLineRead) {
-                console.log("got a line...", line)
-                res(line)
-                wasLineRead = true
+            if (lines.length < numLines) {
+                if (line.trim() !== "") {
+                    console.log("got a line...", line)
+                    lines.push(line)
+                }
+            }
+
+            if (lines.length === numLines) {
                 rl.close()
             }
+        })
+
+        rl.on("close", () => {
+            res(lines)
         })
 
         // TODO: rl error handling
     })
 }
 
-const getFirstLineOfFile = ((readline, fs) => (pathToFile) =>
-    _getFirstLineOfFile(readline, fs, pathToFile))(readline, fs)
+const getLinesOfFile = ((readline, fs) => (pathToFile, numLines) =>
+    _getLinesOfFile(readline, fs, pathToFile, numLines))(readline, fs)
 
 function getNotesInFolder(
     nodeFsPromises: typeof fsPromises,
@@ -86,12 +95,18 @@ function getNotesInFolder(
                 })
 
                 markdownFiles.forEach((mdFileName) => {
-                    getFirstLineOfFile(
-                        nodePath.join(folderPath, mdFileName)
-                    ).then((line) => {
+                    getLinesOfFile(
+                        nodePath.join(folderPath, mdFileName),
+                        2
+                    ).then((lines) => {
                         numNotesRead += 1
-                        noteListMap[mdFileName].preview =
-                            line.slice(0, 20) + "..."
+
+                        noteListMap[mdFileName].title = lines[0]
+                            ? lines[0].slice(0, 20) + "..."
+                            : "N/A"
+                        noteListMap[mdFileName].preview = lines[1]
+                            ? lines[1].slice(0, 20) + "..."
+                            : ""
 
                         // if all files have been read, fullfill promise
                         if (markdownFiles.length === numNotesRead) {
