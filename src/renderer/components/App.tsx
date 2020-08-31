@@ -5,7 +5,7 @@ import { AppTitle } from "./AppTitle"
 import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
 import { MainToRendererApiContext } from "../providers"
-import { NoteListItem } from "../../shared"
+import { NoteListItem, NoteListMap } from "../../shared"
 
 const Container = styled.div`
     display: flex;
@@ -21,13 +21,16 @@ const RightColumn = styled.div`
 
 export function App() {
     const [folderPath, setFolderPath] = useState(null)
-    const [notes, setNotes] = useState<NoteListItem[]>([])
+    const [notesListMap, setNotesListMap] = useState<NoteListMap>({})
+    const [selectedNoteId, setSelectedNoteId] = useState<string>()
+    const [noteContent, setNoteContent] = useState<string>()
 
     const {
         selectFolder,
         getNotesInFolder,
         createNewNote,
         startNotesWatch,
+        getNoteContent,
     } = useContext(MainToRendererApiContext)
 
     const chooseFolder = () => {
@@ -46,7 +49,7 @@ export function App() {
         getNotesInFolder(path)
             .then((notesListMap) => {
                 console.log(notesListMap)
-                setNotes(Object.values(notesListMap))
+                setNotesListMap(notesListMap)
             })
             .catch((e) => {
                 console.log("error getting notes")
@@ -63,6 +66,16 @@ export function App() {
             })
 
         getNotesInDirectory(folderPath)
+    }
+
+    const onSelectNote = (noteId: string) => {
+        setSelectedNoteId(noteId)
+
+        getNoteContent(folderPath, noteId)
+            .then((noteContent) => {
+                setNoteContent(noteContent)
+            })
+            .catch((error) => console.log(error))
     }
 
     useEffect(() => {
@@ -86,11 +99,14 @@ export function App() {
                     />
                 </div>
                 <div>
-                    <NoteList notes={notes} />
+                    <NoteList
+                        notes={Object.values(notesListMap)}
+                        onSelectNote={onSelectNote}
+                    />
                 </div>
             </LeftColumn>
             <RightColumn>
-                <Editor />
+                <Editor noteContent={noteContent} />
             </RightColumn>
         </Container>
     )
