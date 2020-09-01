@@ -5,10 +5,11 @@ import { AppTitle } from "./AppTitle"
 import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
 import { MainToRendererApiContext } from "../providers"
-import { NoteListItem, NoteListMap } from "../../shared"
+import { NoteListMap } from "../../shared"
 
 const Container = styled.div`
     display: flex;
+    background: white;
 `
 
 const LeftColumn = styled.div`
