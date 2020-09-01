@@ -1,20 +1,39 @@
-import React, { useEffect, useRef, useContext } from "react"
+import React, { useEffect, useRef, useContext, MutableRefObject } from "react"
 import CodeMirror from "codemirror"
 import "codemirror/mode/gfm/gfm"
 import "codemirror/lib/codemirror.css"
 import { MainToRendererApiContext } from "../providers"
 
-interface EditorProps {
-    noteContent: string
-    folderPath: string
-    noteFileName: string
+function useCodeMirror(noteFileName: string, noteContent: string) {
+    const textAreaRef = useRef<HTMLTextAreaElement>()
+    const codeMirrorRef = useRef<CodeMirror.EditorFromTextArea>()
+
+    useEffect(() => {
+        textAreaRef.current.value = noteContent
+        codeMirrorRef.current = CodeMirror.fromTextArea(textAreaRef.current, {
+            mode: "gfm",
+        })
+
+        return () => {
+            // destroy codeMirror instance
+            codeMirrorRef.current.toTextArea()
+            codeMirrorRef.current = null
+        }
+    }, [noteFileName, noteContent])
+
+    return [codeMirrorRef, textAreaRef] as [
+        MutableRefObject<CodeMirror.EditorFromTextArea>,
+        MutableRefObject<HTMLTextAreaElement>
+    ]
 }
 
-export function Editor({ noteContent, folderPath, noteFileName }: EditorProps) {
-    const textAreaRef = useRef<HTMLTextAreaElement>()
-    const editorContainerRef = useRef<HTMLDivElement>()
+function useCodeMirrorSave(
+    codeMirror: MutableRefObject<CodeMirror.EditorFromTextArea>,
+    noteContent: string,
+    folderPath: string,
+    noteFileName: string
+) {
     const { saveNote } = useContext(MainToRendererApiContext)
-
     const timerRef = useRef<number>(null)
     const isSavingRef = useRef(false)
     const editorNoteContentRef = useRef("")
@@ -58,7 +77,7 @@ export function Editor({ noteContent, folderPath, noteFileName }: EditorProps) {
         }
         // start timer
         timerRef.current = window.setTimeout(() => {
-            console.log("... done batch")
+            console.log("...done batch")
             // if already performing save, skip
             console.log("isSavingRef.current", isSavingRef.current)
             if (!isSavingRef.current) {
@@ -72,12 +91,10 @@ export function Editor({ noteContent, folderPath, noteFileName }: EditorProps) {
 
     useEffect(() => {
         editorNoteContentRef.current = noteContent
-        textAreaRef.current.value = noteContent
-        const codeMirror = CodeMirror.fromTextArea(textAreaRef.current, {
-            mode: "gfm",
-        })
-
-        codeMirror.on("change", changeHandler)
+        if (codeMirror.current) {
+            console.log("setting change...")
+            codeMirror.current.on("change", changeHandler)
+        }
 
         return () => {
             // do a final save before closing file
@@ -96,14 +113,25 @@ export function Editor({ noteContent, folderPath, noteFileName }: EditorProps) {
                     startSaveNote()
                 }
             }
-
-            // destroy codeMirror instance
-            codeMirror.toTextArea()
         }
-    }, [noteContent, folderPath, noteFileName])
+    }, [codeMirror.current, noteContent, folderPath, noteFileName])
+}
+
+interface EditorProps {
+    noteContent: string
+    folderPath: string
+    noteFileName: string
+}
+
+export function Editor({ noteContent, folderPath, noteFileName }: EditorProps) {
+    const [codeMirrorRef, textAreaRef] = useCodeMirror(
+        noteFileName,
+        noteContent
+    )
+    useCodeMirrorSave(codeMirrorRef, noteContent, folderPath, noteFileName)
 
     return (
-        <div ref={editorContainerRef}>
+        <div>
             <textarea ref={textAreaRef}></textarea>
         </div>
     )
