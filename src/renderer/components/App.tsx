@@ -70,6 +70,7 @@ export function App() {
     }
 
     const onSelectNote = (noteId: string) => {
+        setNoteContent(null)
         setSelectedNoteId(noteId)
 
         getNoteContent(folderPath, noteId)
