@@ -16,6 +16,11 @@ export interface MainToRendererApiMap {
         folderPath: string,
         noteFileName: string
     ) => Promise<string>
+    saveNote: (
+        folderPath: string,
+        noteFileName: string,
+        content: string
+    ) => Promise<void>
 }
 
 function selectFolder(ipcRenderer: IpcRenderer) {
@@ -219,6 +224,22 @@ function getNoteContent(
     })
 }
 
+function saveNote(
+    nodeFsPromises: typeof fsPromises,
+    nodePath: typeof path,
+    folderPath: string,
+    noteFileName: string,
+    content: string
+) {
+    return nodeFsPromises.writeFile(
+        nodePath.join(folderPath, noteFileName),
+        content,
+        {
+            encoding: "utf8",
+        }
+    )
+}
+
 const MainToRendererApi: MainToRendererApiMap = {
     selectFolder: ((ipcRenderer) => () => selectFolder(ipcRenderer))(
         ipcRenderer
@@ -231,6 +252,11 @@ const MainToRendererApi: MainToRendererApiMap = {
         startNotesWatch(chokidar, path, folderPath))(chokidar, path),
     getNoteContent: ((fsPromises, path) => (folderPath, noteFileName) =>
         getNoteContent(fsPromises, path, folderPath, noteFileName))(
+        fsPromises,
+        path
+    ),
+    saveNote: ((fsPromises, path) => (folderPath, noteFileName, content) =>
+        saveNote(fsPromises, path, folderPath, noteFileName, content))(
         fsPromises,
         path
     ),

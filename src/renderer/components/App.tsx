@@ -22,8 +22,8 @@ const RightColumn = styled.div`
 export function App() {
     const [folderPath, setFolderPath] = useState(null)
     const [notesListMap, setNotesListMap] = useState<NoteListMap>({})
-    const [selectedNoteId, setSelectedNoteId] = useState<string>()
-    const [noteContent, setNoteContent] = useState<string>()
+    const [selectedNoteId, setSelectedNoteId] = useState<string>(null)
+    const [noteContent, setNoteContent] = useState<string>(null)
 
     const {
         selectFolder,
@@ -106,7 +106,11 @@ export function App() {
                 </div>
             </LeftColumn>
             <RightColumn>
-                <Editor noteContent={noteContent} />
+                <Editor
+                    noteContent={noteContent}
+                    folderPath={folderPath}
+                    noteFileName={selectedNoteId}
+                />
             </RightColumn>
         </Container>
     )
