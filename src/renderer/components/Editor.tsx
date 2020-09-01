@@ -90,9 +90,8 @@ function useCodeMirrorSave(
     }
 
     useEffect(() => {
-        editorNoteContentRef.current = noteContent
-        if (codeMirror.current) {
-            console.log("setting change...")
+        if (codeMirror.current && noteContent !== null) {
+            editorNoteContentRef.current = noteContent
             codeMirror.current.on("change", changeHandler)
         }
 
@@ -100,7 +99,11 @@ function useCodeMirrorSave(
             // do a final save before closing file
             // kill timer and save right away
             clearTimeout(timerRef.current)
-            if (noteFileName !== null && folderPath !== null) {
+            if (
+                noteFileName !== null &&
+                folderPath !== null &&
+                noteContent !== null
+            ) {
                 if (isSavingRef.current) {
                     saveNotePromiseRef.current
                         .then(() => {
