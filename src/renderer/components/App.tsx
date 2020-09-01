@@ -81,7 +81,7 @@ export function App() {
     useEffect(() => {
         if (folderPath) {
             console.log("got folder path, start watch")
-            startNotesWatch(folderPath)
+            // startNotesWatch(folderPath)
         }
     }, [folderPath])
 
