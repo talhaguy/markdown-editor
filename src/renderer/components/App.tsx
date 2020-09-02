@@ -5,7 +5,7 @@ import { AppTitle } from "./AppTitle"
 import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
 import { MainToRendererApiContext } from "../providers"
-import { NoteListMap } from "../../shared"
+import { NoteListMap } from "../../models"
 
 const Container = styled.div`
     display: flex;

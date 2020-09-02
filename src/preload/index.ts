@@ -2,7 +2,8 @@ import fs, { promises as fsPromises } from "fs"
 import path from "path"
 import { ipcRenderer, IpcRenderer, IpcRendererEvent } from "electron"
 import chokidar from "chokidar"
-import { IPCEvent, NoteListMap } from "../shared"
+import { IPCEvent } from "../constants"
+import { NoteListMap } from "../models"
 import readline from "readline"
 
 console.log("preload js")
@@ -191,11 +192,13 @@ function createNewNote(
 ) {
     const fileName = createNoteFileName()
     const filePath = nodePath.join(folderPath, fileName)
-    return nodeFsPromises.writeFile(filePath, "initial file contents...", {
-        encoding: "utf8",
-    }).then(() => {
-        return fileName
-    })
+    return nodeFsPromises
+        .writeFile(filePath, "initial file contents...", {
+            encoding: "utf8",
+        })
+        .then(() => {
+            return fileName
+        })
 }
 
 function startNotesWatch(
