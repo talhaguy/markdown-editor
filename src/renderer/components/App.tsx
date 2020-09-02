@@ -80,12 +80,12 @@ export function App() {
             .catch((error) => console.log(error))
     }
 
-    useEffect(() => {
-        if (folderPath) {
-            console.log("got folder path, start watch")
-            // startNotesWatch(folderPath)
-        }
-    }, [folderPath])
+    // useEffect(() => {
+    //     if (folderPath) {
+    //         console.log("got folder path, start watch")
+    //         startNotesWatch(folderPath)
+    //     }
+    // }, [folderPath])
 
     return (
         <Container>
@@ -102,7 +102,11 @@ export function App() {
                 </div>
                 <div>
                     <NoteList
-                        notes={Object.values(notesListMap)}
+                        notes={Object.values(notesListMap).sort((a, b) => {
+                            return (
+                                (a.lastModifiedDate - b.lastModifiedDate) * -1
+                            )
+                        })}
                         onSelectNote={onSelectNote}
                     />
                 </div>
