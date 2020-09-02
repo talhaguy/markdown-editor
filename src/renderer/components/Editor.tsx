@@ -38,6 +38,7 @@ function useCodeMirrorSave(
     const isSavingRef = useRef(false)
     const editorNoteContentRef = useRef("")
     const saveNotePromiseRef = useRef(null)
+    const fileChanged = useRef(false)
 
     const startSaveNote = () => {
         // save changes
@@ -68,6 +69,7 @@ function useCodeMirrorSave(
         changeObj: CodeMirror.EditorChangeLinkedList
     ) => {
         console.log("batch...")
+        fileChanged.current = true
         editorNoteContentRef.current = instance.getValue()
 
         // clear timer if already started
@@ -102,7 +104,8 @@ function useCodeMirrorSave(
             if (
                 noteFileName !== null &&
                 folderPath !== null &&
-                noteContent !== null
+                noteContent !== null &&
+                fileChanged.current
             ) {
                 if (isSavingRef.current) {
                     saveNotePromiseRef.current
@@ -116,6 +119,8 @@ function useCodeMirrorSave(
                     startSaveNote()
                 }
             }
+
+            fileChanged.current = false
         }
     }, [codeMirror.current, noteContent, folderPath, noteFileName])
 }
