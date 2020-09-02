@@ -31,7 +31,8 @@ function useCodeMirrorSave(
     codeMirror: MutableRefObject<CodeMirror.EditorFromTextArea>,
     noteContent: string,
     folderPath: string,
-    noteFileName: string
+    noteFileName: string,
+    refreshNotesList: () => void
 ) {
     const { saveNote } = useContext(MainToRendererApiContext)
     const timerRef = useRef<number>(null)
@@ -54,6 +55,7 @@ function useCodeMirrorSave(
                 console.log("...done saving")
 
                 // TODO: refresh notes list
+                refreshNotesList()
             })
             .catch((err) => {
                 console.log(err)
@@ -129,14 +131,26 @@ interface EditorProps {
     noteContent: string
     folderPath: string
     noteFileName: string
+    refreshNotesList: () => void
 }
 
-export function Editor({ noteContent, folderPath, noteFileName }: EditorProps) {
+export function Editor({
+    noteContent,
+    folderPath,
+    noteFileName,
+    refreshNotesList,
+}: EditorProps) {
     const [codeMirrorRef, textAreaRef] = useCodeMirror(
         noteFileName,
         noteContent
     )
-    useCodeMirrorSave(codeMirrorRef, noteContent, folderPath, noteFileName)
+    useCodeMirrorSave(
+        codeMirrorRef,
+        noteContent,
+        folderPath,
+        noteFileName,
+        refreshNotesList
+    )
 
     return (
         <div>

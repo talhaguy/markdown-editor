@@ -117,6 +117,7 @@ export function App() {
                     noteContent={noteContent}
                     folderPath={folderPath}
                     noteFileName={selectedNoteId}
+                    refreshNotesList={() => getNotesInDirectory(folderPath)}
                 />
             </RightColumn>
         </Container>
