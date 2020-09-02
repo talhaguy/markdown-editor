@@ -10,7 +10,7 @@ console.log("preload js")
 export interface MainToRendererApiMap {
     selectFolder: () => Promise<string>
     getNotesInFolder: (folderPath: string) => Promise<NoteListMap>
-    createNewNote: (folderPath: string) => Promise<void>
+    createNewNote: (folderPath: string) => Promise<string>
     startNotesWatch: (folderPath: string) => void
     getNoteContent: (
         folderPath: string,
@@ -193,6 +193,8 @@ function createNewNote(
     const filePath = nodePath.join(folderPath, fileName)
     return nodeFsPromises.writeFile(filePath, "initial file contents...", {
         encoding: "utf8",
+    }).then(() => {
+        return fileName
     })
 }
 

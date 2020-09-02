@@ -61,9 +61,12 @@ export function App() {
 
     const createNewNoteFile = () => {
         createNewNote(folderPath)
-            .then(() => {
+            .then((fileName) => {
                 console.log("done creating note")
                 getNotesInDirectory(folderPath)
+
+                // after new note creation, select it
+                onSelectNote(fileName)
             })
             .catch(() => {
                 console.log("could not create note")
