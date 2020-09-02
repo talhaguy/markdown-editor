@@ -86,7 +86,13 @@ function getNotesInFolder(
     nodePath: typeof path,
     folderPath: string
 ) {
+    console.log("preload - getNotesInFolder()", nodeFsPromises)
     return nodeFsPromises.readdir(folderPath).then((files) => {
+        console.log(
+            `preload - getNotesInFolder() - nodeFsPromises.readdir(${folderPath}).then()`,
+            nodeFsPromises
+        )
+
         const markdownFiles = files.filter((file) => file.indexOf(".md") > -1)
 
         return new Promise<NoteListMap>((res, rej) => {

@@ -8,7 +8,6 @@ import {
 } from "electron"
 import path from "path"
 import { IPCEvent } from "../shared"
-import { promises as fs } from "fs"
 
 console.log("main...", path.join(__dirname, "preload.js"))
 
@@ -29,6 +28,10 @@ function createWindow() {
     // Open the DevTools.
     win.webContents.openDevTools()
 }
+
+// Set allowRendererProcessReuse to false to resolve promises not resolving if app is refreshed
+// https://github.com/electron/electron/issues/22119
+app.allowRendererProcessReuse = false
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

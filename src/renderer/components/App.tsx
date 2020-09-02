@@ -47,6 +47,7 @@ export function App() {
     }
 
     const getNotesInDirectory = (path) => {
+        console.log("getNotesInDirectory()")
         getNotesInFolder(path)
             .then((notesListMap) => {
                 console.log(notesListMap)
