@@ -21,6 +21,7 @@ export interface MainToRendererApiMap {
         noteFileName: string,
         content: string
     ) => Promise<void>
+    deleteNote: (folderPath: string, noteFileName: string) => Promise<void>
 }
 
 function selectFolder(ipcRenderer: IpcRenderer) {
@@ -237,13 +238,22 @@ function saveNote(
     noteFileName: string,
     content: string
 ) {
-    return nodeFsPromises.writeFile(
-        nodePath.join(folderPath, noteFileName),
-        content,
-        {
+    const filePath = nodePath.join(folderPath, noteFileName)
+    // check if file exists, then write (for cases when a file is deleted but a save was triggered to happen)
+    return nodeFsPromises.access(filePath).then(() => {
+        return nodeFsPromises.writeFile(filePath, content, {
             encoding: "utf8",
-        }
-    )
+        })
+    })
+}
+
+function deleteNote(
+    nodeFsPromises: typeof fsPromises,
+    nodePath: typeof path,
+    folderPath: string,
+    noteFileName: string
+) {
+    return nodeFsPromises.unlink(nodePath.join(folderPath, noteFileName))
 }
 
 const MainToRendererApi: MainToRendererApiMap = {
@@ -263,6 +273,11 @@ const MainToRendererApi: MainToRendererApiMap = {
     ),
     saveNote: ((fsPromises, path) => (folderPath, noteFileName, content) =>
         saveNote(fsPromises, path, folderPath, noteFileName, content))(
+        fsPromises,
+        path
+    ),
+    deleteNote: ((fsPromises, path) => (folderPath, noteFileName) =>
+        deleteNote(fsPromises, path, folderPath, noteFileName))(
         fsPromises,
         path
     ),

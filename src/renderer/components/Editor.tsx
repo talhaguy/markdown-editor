@@ -9,14 +9,21 @@ function useCodeMirror(noteFileName: string, noteContent: string) {
     const codeMirrorRef = useRef<CodeMirror.EditorFromTextArea>()
 
     useEffect(() => {
-        textAreaRef.current.value = noteContent
-        codeMirrorRef.current = CodeMirror.fromTextArea(textAreaRef.current, {
-            mode: "gfm",
-        })
+        if (noteFileName && noteContent) {
+            textAreaRef.current.value = noteContent
+            codeMirrorRef.current = CodeMirror.fromTextArea(
+                textAreaRef.current,
+                {
+                    mode: "gfm",
+                }
+            )
+        }
 
         return () => {
             // destroy codeMirror instance
-            codeMirrorRef.current.toTextArea()
+            codeMirrorRef.current?.toTextArea()
+            // set display of text area to none as `codeMirrorRef.current.toTextArea()` recreates the DOM node
+            textAreaRef.current.style.display = "none"
             codeMirrorRef.current = null
         }
     }, [noteFileName, noteContent])
@@ -152,9 +159,12 @@ export function Editor({
         refreshNotesList
     )
 
+    const validNoteOpen = noteContent !== null && noteFileName !== null
+
     return (
-        <div>
-            <textarea ref={textAreaRef}></textarea>
-        </div>
+        <>
+            <textarea ref={textAreaRef} style={{ display: "none" }}></textarea>
+            {!validNoteOpen ? <>No note open</> : ""}
+        </>
     )
 }

@@ -32,6 +32,7 @@ export function App() {
         createNewNote,
         startNotesWatch,
         getNoteContent,
+        deleteNote,
     } = useContext(MainToRendererApiContext)
 
     const chooseFolder = () => {
@@ -62,12 +63,11 @@ export function App() {
         createNewNote(folderPath)
             .then(() => {
                 console.log("done creating note")
+                getNotesInDirectory(folderPath)
             })
             .catch(() => {
                 console.log("could not create note")
             })
-
-        getNotesInDirectory(folderPath)
     }
 
     const onSelectNote = (noteId: string) => {
@@ -79,6 +79,22 @@ export function App() {
                 setNoteContent(noteContent)
             })
             .catch((error) => console.log(error))
+    }
+
+    const onNoteListDeleteBtnClick = (fileName: string) => {
+        deleteNote(folderPath, fileName)
+            .then(() => {
+                console.log("deleted note")
+                // if note currently opened was deleted, clear it
+                setSelectedNoteId(null)
+                setNoteContent(null)
+
+                // refresh notes list
+                getNotesInDirectory(folderPath)
+            })
+            .catch((error) => {
+                console.log("something went wrong when trying to delete")
+            })
     }
 
     // useEffect(() => {
@@ -109,6 +125,7 @@ export function App() {
                             )
                         })}
                         onSelectNote={onSelectNote}
+                        onDeleteBtnClick={onNoteListDeleteBtnClick}
                     />
                 </div>
             </LeftColumn>

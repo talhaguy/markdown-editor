@@ -1,12 +1,27 @@
-import React from "react"
+import React, { MouseEvent, useContext } from "react"
 import { NoteListItem } from "../../shared"
+import { MainToRendererApiContext } from "../providers"
 
 interface NoteListProps {
     notes: NoteListItem[]
     onSelectNote: (noteId: string) => void
+    onDeleteBtnClick: (fileName: string) => void
 }
 
-export function NoteList({ notes, onSelectNote }: NoteListProps) {
+export function NoteList({
+    notes,
+    onSelectNote,
+    onDeleteBtnClick,
+}: NoteListProps) {
+    const onDeleteClick = (
+        event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+        fileName: string
+    ) => {
+        event.stopPropagation()
+        console.log("delete clicked")
+        onDeleteBtnClick(fileName)
+    }
+
     return (
         <>
             {notes.length > 0 ? (
@@ -22,6 +37,14 @@ export function NoteList({ notes, onSelectNote }: NoteListProps) {
                                       note.lastModifiedDate
                                   ).toLocaleString()
                                 : "N/A"}
+                            <br />
+                            <button
+                                onClick={(event) =>
+                                    onDeleteClick(event, note.id)
+                                }
+                            >
+                                Delete
+                            </button>
                         </li>
                     ))}
                 </ul>
