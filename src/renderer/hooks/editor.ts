@@ -15,6 +15,7 @@ export function useCodeMirror(noteFileName: string, noteContent: string) {
                     mode: "gfm",
                 }
             )
+            codeMirrorRef.current.focus()
         }
 
         return () => {
