@@ -4,8 +4,9 @@ import { Editor } from "./Editor"
 import { AppTitle } from "./AppTitle"
 import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
-import { MainToRendererApiContext } from "../providers"
+import { MainToRendererApiContext, ConfigContext } from "../providers"
 import { NoteListMap } from "../../models"
+import { SetLastFolderPathOpenedFunc } from "../services"
 
 const Container = styled.div`
     display: flex;
@@ -20,11 +21,34 @@ const RightColumn = styled.div`
     flex-grow: 1;
 `
 
+export function useLastFolderPathOpened() {
+    const { getLastFolderPathOpened, setLastFolderPathOpened } = useContext(
+        ConfigContext
+    )
+
+    const [folderPath, setFolderPath] = useState<string>(null)
+
+    // get last folder opened once
+    useEffect(() => {
+        setFolderPath(getLastFolderPathOpened())
+    }, [])
+
+    return [folderPath, setLastFolderPathOpened] as [
+        string | null,
+        SetLastFolderPathOpenedFunc
+    ]
+}
+
 export function App() {
     const [folderPath, setFolderPath] = useState(null)
     const [notesListMap, setNotesListMap] = useState<NoteListMap>({})
     const [selectedNoteId, setSelectedNoteId] = useState<string>(null)
     const [noteContent, setNoteContent] = useState<string>(null)
+
+    const [
+        lastFolderPathOpened,
+        setLastFolderPathOpenedInConfig,
+    ] = useLastFolderPathOpened()
 
     const {
         selectFolder,
@@ -35,13 +59,17 @@ export function App() {
         deleteNote,
     } = useContext(MainToRendererApiContext)
 
+    const onAfterSelectFolder = (folderPath: string) => {
+        console.log("chosen folder", folderPath)
+        setFolderPath(folderPath)
+        getNotesInDirectory(folderPath)
+        console.log("DEBUG: before setLastFolderPathOpenedInConfig")
+        setLastFolderPathOpenedInConfig(folderPath)
+    }
+
     const chooseFolder = () => {
         selectFolder()
-            .then((folderPath) => {
-                console.log("chosen folder", folderPath)
-                setFolderPath(folderPath)
-                getNotesInDirectory(folderPath)
-            })
+            .then(onAfterSelectFolder)
             .catch(() => {
                 console.log("canceled")
             })
@@ -106,6 +134,12 @@ export function App() {
     //         startNotesWatch(folderPath)
     //     }
     // }, [folderPath])
+
+    useEffect(() => {
+        if (lastFolderPathOpened) {
+            onAfterSelectFolder(lastFolderPathOpened)
+        }
+    }, [lastFolderPathOpened])
 
     return (
         <Container>

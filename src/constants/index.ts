@@ -7,3 +7,7 @@ export enum IPCEvent {
 export enum Views {
     Index = "index.html",
 }
+
+export enum ConfigStorageKey {
+    LastFolderPathOpened = "last_folder_path_opened",
+}
