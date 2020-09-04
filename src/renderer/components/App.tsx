@@ -30,7 +30,7 @@ export function App() {
         selectFolder,
         getNotesInFolder,
         createNewNote,
-        startNotesWatch,
+        // startNotesWatch,
         getNoteContent,
         deleteNote,
     } = useContext(MainToRendererApiContext)
