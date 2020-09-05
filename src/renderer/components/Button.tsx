@@ -27,7 +27,7 @@ const Label = styled.span`
 
 interface ButtonProps {
     onClick: () => void
-    ariaLabel: string
+    ariaLabel?: string
     image?: string
     children?: ReactNode
 }
@@ -44,7 +44,7 @@ export function Button({
                 event.preventDefault()
                 onClick()
             }}
-            aria-label={ariaLabel}
+            aria-label={ariaLabel ? ariaLabel : null}
             href="#"
             role="button"
         >

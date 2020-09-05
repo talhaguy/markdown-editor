@@ -50,7 +50,7 @@ export function Controls({
             <FolderRow>
                 <Button
                     onClick={chooseFolder}
-                    ariaLabel={translation("chooseFolder")}
+                    ariaLabel={translation("chooseFolderButton")}
                     image={"folder-24px.svg"}
                 ></Button>
                 <SelectedFolder>
@@ -60,12 +60,8 @@ export function Controls({
                 </SelectedFolder>
             </FolderRow>
             {folderName ? (
-                <Button
-                    onClick={createNewNote}
-                    ariaLabel={translation("chooseFolder")}
-                    image={"note_add-24px.svg"}
-                >
-                    New Note
+                <Button onClick={createNewNote} image={"note_add-24px.svg"}>
+                    {translation("newNoteButton")}
                 </Button>
             ) : (
                 ""
