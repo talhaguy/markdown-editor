@@ -1,5 +1,10 @@
 import React, { MouseEvent } from "react"
 import { NoteListItem } from "../../models"
+import styled from "styled-components"
+
+const List = styled.ul`
+    overflow: scroll;
+`
 
 interface NoteListProps {
     notes: NoteListItem[]
@@ -24,7 +29,7 @@ export function NoteList({
     return (
         <>
             {notes.length > 0 ? (
-                <ul>
+                <List>
                     {notes.map((note, i) => (
                         <li key={i} onClick={() => onSelectNote(note.id)}>
                             {note.title ? note.title : "N/A"}
@@ -46,7 +51,7 @@ export function NoteList({
                             </button>
                         </li>
                     ))}
-                </ul>
+                </List>
             ) : (
                 <span>No notes</span>
             )}

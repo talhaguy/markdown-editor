@@ -13,6 +13,7 @@ const Container = styled.div`
 
 const FolderRow = styled.div`
     display: flex;
+    margin-bottom: 1.5rem;
 `
 
 const SelectedFolder = styled.div`
@@ -59,7 +60,13 @@ export function Controls({
                 </SelectedFolder>
             </FolderRow>
             {folderName ? (
-                <button onClick={createNewNote}>New Note</button>
+                <Button
+                    onClick={createNewNote}
+                    ariaLabel={translation("chooseFolder")}
+                    image={"note_add-24px.svg"}
+                >
+                    New Note
+                </Button>
             ) : (
                 ""
             )}
