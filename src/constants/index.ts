@@ -11,3 +11,8 @@ export enum Views {
 export enum ConfigStorageKey {
     LastFolderPathOpened = "last_folder_path_opened",
 }
+
+export enum OS {
+    Windows = "windows",
+    Posix = "posix",
+}

@@ -13,6 +13,7 @@ import {
     deleteNote,
     startNotesWatch,
 } from "./services/notes"
+import { getOS, GetOSFunc } from "./services/utils"
 
 console.log("preload js")
 
@@ -24,6 +25,7 @@ export interface MainToRendererApiMap {
     saveNote: SaveNoteFunc
     deleteNote: DeleteNoteFunc
     startNotesWatch: StartNotesWatchFunc
+    getOS: GetOSFunc
 }
 
 const MainToRendererApi: MainToRendererApiMap = {
@@ -34,6 +36,7 @@ const MainToRendererApi: MainToRendererApiMap = {
     saveNote,
     deleteNote,
     startNotesWatch,
+    getOS,
 }
 
 // add to window object to gain access from renderer

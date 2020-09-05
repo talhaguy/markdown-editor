@@ -1,6 +1,32 @@
-import React, { useContext } from "react"
-import { TranslationContext } from "../providers"
+import React, { useContext, useRef } from "react"
+import {
+    TranslationContext,
+    UtilContext,
+    MainToRendererApiContext,
+} from "../providers"
 import { Button } from "./Button"
+import styled from "styled-components"
+
+const Container = styled.div`
+    padding: 1.5rem;
+`
+
+const FolderRow = styled.div`
+    display: flex;
+`
+
+const SelectedFolder = styled.div`
+    border: 0.1rem solid var(--color-creamGreen);
+    border-radius: 0.3rem;
+    color: var(--color-creamGreen);
+    font-size: 1.4rem;
+    height: 2.8rem;
+    line-height: 2.6rem;
+    flex-grow: 1;
+    margin-left: 0.5rem;
+    padding-left: 0.5rem;
+    overflow: hidden;
+`
 
 interface ControlsProps {
     chooseFolder: () => void
@@ -14,20 +40,29 @@ export function Controls({
     createNewNote,
 }: ControlsProps) {
     const { translation } = useContext(TranslationContext)
+    const { getLastPathItem } = useContext(UtilContext)
+    const { getOS } = useContext(MainToRendererApiContext)
+    const os = useRef(getOS())
+
     return (
-        <>
-            <Button
-                onClick={chooseFolder}
-                ariaLabel={translation("chooseFolder")}
-                image={"folder-24px.svg"}
-            ></Button>
-            {folderName ? folderName : "N/A"}
-            <br />
+        <Container>
+            <FolderRow>
+                <Button
+                    onClick={chooseFolder}
+                    ariaLabel={translation("chooseFolder")}
+                    image={"folder-24px.svg"}
+                ></Button>
+                <SelectedFolder>
+                    {folderName
+                        ? getLastPathItem(os.current, folderName)
+                        : "N/A"}
+                </SelectedFolder>
+            </FolderRow>
             {folderName ? (
                 <button onClick={createNewNote}>New Note</button>
             ) : (
                 ""
             )}
-        </>
+        </Container>
     )
 }

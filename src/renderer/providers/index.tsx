@@ -3,9 +3,9 @@ import { MainToRendererApiMap } from "../../preload"
 import {
     GetLastFolderPathOpenedFunc,
     SetLastFolderPathOpenedFunc,
-    GetTranslationFunc,
-} from "../services"
-import { Translation } from "../../models"
+} from "../services/config"
+import { GetTranslationFunc } from "../services/translation"
+import { GetLastPathItemFunc } from "../services/util"
 
 export const MainToRendererApiContext = React.createContext<
     MainToRendererApiMap
@@ -25,3 +25,9 @@ export interface TranslationContextMap {
 export const TranslationContext = React.createContext<TranslationContextMap>(
     null
 )
+
+export interface UtilServiceMap {
+    getLastPathItem: GetLastPathItemFunc
+}
+
+export const UtilContext = React.createContext<UtilServiceMap>(null)

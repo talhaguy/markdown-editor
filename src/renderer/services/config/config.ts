@@ -1,4 +1,4 @@
-import { ConfigStorageKey } from "../../constants"
+import { ConfigStorageKey } from "../../../constants"
 
 export function getLastFolderPathOpened(localStorage: Storage) {
     return localStorage.getItem(ConfigStorageKey.LastFolderPathOpened)

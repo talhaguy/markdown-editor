@@ -1,6 +1,5 @@
-import React, { MouseEvent, useContext } from "react"
+import React, { MouseEvent } from "react"
 import { NoteListItem } from "../../models"
-import { MainToRendererApiContext } from "../providers"
 
 interface NoteListProps {
     notes: NoteListItem[]
