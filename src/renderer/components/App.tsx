@@ -11,14 +11,20 @@ import { SetLastFolderPathOpenedFunc } from "../services"
 const Container = styled.div`
     display: flex;
     background: white;
+    height: 100vh;
 `
+
+const columnShared = `height: 100%;`
 
 const LeftColumn = styled.div`
     width: 265px;
+    background-color: var(--color-lightJet);
+    ${columnShared}
 `
 
 const RightColumn = styled.div`
     flex-grow: 1;
+    ${columnShared}
 `
 
 export function useLastFolderPathOpened() {

@@ -1,4 +1,6 @@
-import React from "react"
+import React, { useContext } from "react"
+import { TranslationContext } from "../providers"
+import { Button } from "./Button"
 
 interface ControlsProps {
     chooseFolder: () => void
@@ -11,9 +13,14 @@ export function Controls({
     folderName,
     createNewNote,
 }: ControlsProps) {
+    const { translation } = useContext(TranslationContext)
     return (
         <>
-            <button onClick={chooseFolder}>Choose Folder</button>
+            <Button
+                onClick={chooseFolder}
+                ariaLabel={translation("chooseFolder")}
+                image={"folder-24px.svg"}
+            ></Button>
             {folderName ? folderName : "N/A"}
             <br />
             {folderName ? (
