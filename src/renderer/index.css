@@ -1,0 +1,23 @@
+:root {
+    --color-jet: #333333;
+    --color-lightJet: #3d3d3d;
+    --color-lighterJet: #474747;
+    --color-darkPurple: #643173;
+    --color-lavender: #cdc7e5;
+    --color-turqoise: #2589bd;
+    --color-creamGreen: #89ce94;
+    --color-darkGreen: #2a6534;
+
+    --font-primary: "PT Sans", sans-serif;
+
+    font-family: var(--font-primary);
+    font-size: 62.5%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
