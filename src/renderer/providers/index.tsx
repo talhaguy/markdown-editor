@@ -3,7 +3,9 @@ import { MainToRendererApiMap } from "../../preload"
 import {
     GetLastFolderPathOpenedFunc,
     SetLastFolderPathOpenedFunc,
+    GetTranslationFunc,
 } from "../services"
+import { Translation } from "../../models"
 
 export const MainToRendererApiContext = React.createContext<
     MainToRendererApiMap
@@ -15,3 +17,11 @@ export interface ConfigServiceMap {
 }
 
 export const ConfigContext = React.createContext<ConfigServiceMap>(null)
+
+export interface TranslationContextMap {
+    translation: GetTranslationFunc
+}
+
+export const TranslationContext = React.createContext<TranslationContextMap>(
+    null
+)

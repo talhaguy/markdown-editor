@@ -6,8 +6,11 @@ import {
     MainToRendererApiContext,
     ConfigServiceMap,
     ConfigContext,
+    TranslationContext,
+    TranslationContextMap,
 } from "./providers"
 import { getLastFolderPathOpened, setLastFolderPathOpened } from "./services"
+import { getTranslation } from "./services"
 
 declare const _MainToRendererApi: MainToRendererApiMap
 
@@ -16,10 +19,16 @@ const config: ConfigServiceMap = {
     setLastFolderPathOpened,
 }
 
+const translation: TranslationContextMap = {
+    translation: getTranslation,
+}
+
 ReactDOM.render(
     <MainToRendererApiContext.Provider value={_MainToRendererApi}>
         <ConfigContext.Provider value={config}>
-            <App />
+            <TranslationContext.Provider value={translation}>
+                <App />
+            </TranslationContext.Provider>
         </ConfigContext.Provider>
     </MainToRendererApiContext.Provider>,
     document.getElementById("app")

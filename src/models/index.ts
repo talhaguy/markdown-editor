@@ -8,3 +8,7 @@ export interface NoteListItem {
 export interface NoteListMap {
     [id: string]: NoteListItem
 }
+
+export interface Translation {
+    [key: string]: string
+}
