@@ -11,6 +11,7 @@ import {
 } from "./providers"
 import { getLastFolderPathOpened, setLastFolderPathOpened } from "./services"
 import { getTranslation } from "./services"
+import "./index.css"
 
 declare const _MainToRendererApi: MainToRendererApiMap
 
