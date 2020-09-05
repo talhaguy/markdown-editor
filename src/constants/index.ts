@@ -11,3 +11,14 @@ export enum Views {
 export enum ConfigStorageKey {
     LastFolderPathOpened = "last_folder_path_opened",
 }
+
+export enum Color {
+    Jet = "#333333",
+    LightJet = "#3D3D3D",
+    LighterJet = "#474747",
+    DarkPurple = "#643173",
+    Lavender = "#CDC7E5",
+    Turqoise = "#2589BD",
+    CreamGreen = "#89CE94",
+    DarkGreen = "#2A6534",
+}
