@@ -14,12 +14,22 @@ const Container = styled.div`
     height: 100vh;
 `
 
-const columnShared = `height: 100%;`
+const columnShared = `
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+`
 
 const LeftColumn = styled.div`
     width: 265px;
     background-color: var(--color-lightJet);
     ${columnShared}
+`
+
+const NoteListContainer = styled.div`
+    flex-grow: 1;
+    overflow: hidden;
 `
 
 const RightColumn = styled.div`
@@ -160,7 +170,7 @@ export function App() {
                         createNewNote={createNewNoteFile}
                     />
                 </div>
-                <div>
+                <NoteListContainer>
                     <NoteList
                         notes={Object.values(notesListMap).sort((a, b) => {
                             return (
@@ -170,7 +180,7 @@ export function App() {
                         onSelectNote={onSelectNote}
                         onDeleteBtnClick={onNoteListDeleteBtnClick}
                     />
-                </div>
+                </NoteListContainer>
             </LeftColumn>
             <RightColumn>
                 <Editor

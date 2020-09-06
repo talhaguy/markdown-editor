@@ -3,7 +3,11 @@ import { NoteListItem } from "../../models"
 import styled from "styled-components"
 
 const List = styled.ul`
-    overflow: scroll;
+    overflow-y: scroll;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 `
 
 interface NoteListProps {

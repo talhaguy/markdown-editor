@@ -22,3 +22,20 @@
 body {
     margin: 0;
 }
+
+::-webkit-scrollbar {
+    width: 1.5rem;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-lighterJet);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-turqoise);
+    border-radius: 0.3rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-lavender);
+}
