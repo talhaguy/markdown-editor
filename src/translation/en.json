@@ -2,5 +2,6 @@
     "app_title": "Markdown Editor",
     "app_version": "v1.0",
     "chooseFolderButton": "Choose Folder",
-    "newNoteButton": "New Note"
+    "newNoteButton": "New Note",
+    "lastModified": "Last Edited {0}"
 }

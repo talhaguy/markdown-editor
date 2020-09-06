@@ -1,6 +1,7 @@
-import React, { MouseEvent } from "react"
-import { NoteListItem } from "../../models"
+import React from "react"
+import { NoteListItem as NoteListItemModel } from "../../models"
 import styled from "styled-components"
+import { NoteListItem } from "./NoteListItem"
 
 const List = styled.ul`
     overflow-y: scroll;
@@ -11,49 +12,30 @@ const List = styled.ul`
 `
 
 interface NoteListProps {
-    notes: NoteListItem[]
+    notes: NoteListItemModel[]
     onSelectNote: (noteId: string) => void
     onDeleteBtnClick: (fileName: string) => void
+    selectedNoteId: string
 }
 
 export function NoteList({
     notes,
     onSelectNote,
     onDeleteBtnClick,
+    selectedNoteId,
 }: NoteListProps) {
-    const onDeleteClick = (
-        event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
-        fileName: string
-    ) => {
-        event.stopPropagation()
-        console.log("delete clicked")
-        onDeleteBtnClick(fileName)
-    }
-
     return (
         <>
             {notes.length > 0 ? (
                 <List>
                     {notes.map((note, i) => (
-                        <li key={i} onClick={() => onSelectNote(note.id)}>
-                            {note.title ? note.title : "N/A"}
-                            <br />
-                            {note.preview ? note.preview : "N/A"}
-                            <br />
-                            {note.lastModifiedDate
-                                ? new Date(
-                                      note.lastModifiedDate
-                                  ).toLocaleString()
-                                : "N/A"}
-                            <br />
-                            <button
-                                onClick={(event) =>
-                                    onDeleteClick(event, note.id)
-                                }
-                            >
-                                Delete
-                            </button>
-                        </li>
+                        <NoteListItem
+                            key={i}
+                            note={note}
+                            onSelectNote={onSelectNote}
+                            onDeleteBtnClick={onDeleteBtnClick}
+                            isSelected={selectedNoteId === note.id}
+                        />
                     ))}
                 </List>
             ) : (

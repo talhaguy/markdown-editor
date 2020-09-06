@@ -22,7 +22,7 @@ const columnShared = `
 `
 
 const LeftColumn = styled.div`
-    width: 265px;
+    width: 270px;
     background-color: var(--color-lightJet);
     ${columnShared}
 `
@@ -179,6 +179,7 @@ export function App() {
                         })}
                         onSelectNote={onSelectNote}
                         onDeleteBtnClick={onNoteListDeleteBtnClick}
+                        selectedNoteId={selectedNoteId}
                     />
                 </NoteListContainer>
             </LeftColumn>
