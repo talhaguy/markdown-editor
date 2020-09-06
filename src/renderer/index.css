@@ -37,5 +37,5 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-lavender);
+    background: var(--color-turqoise);
 }

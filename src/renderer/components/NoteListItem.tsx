@@ -8,6 +8,21 @@ const ListItem = styled.li<Pick<NoteListItemProps, "isSelected">>`
     padding: 0 1.5rem;
     background-color: ${({ isSelected }) =>
         isSelected ? "var(--color-creamGreen)" : "var(--color-lightJet)"};
+    position: relative;
+
+    /* to cover the border top of the next unselected item */
+    &::after {
+        content: "";
+        height: 0.1rem;
+        background-color: ${({ isSelected }) =>
+            isSelected ? "var(--color-creamGreen)" : "transparent"};
+        display: block;
+        width: 100%;
+        position: absolute;
+        bottom: -0.1rem;
+        left: 0;
+        z-index: 100;
+    }
 `
 
 const ListItemContent = styled.div<Pick<NoteListItemProps, "isSelected">>`
