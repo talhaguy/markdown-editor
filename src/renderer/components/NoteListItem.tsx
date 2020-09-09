@@ -99,7 +99,7 @@ export function NoteListItem({
                     <NoteDateModifiedText>
                         {note.lastModifiedDate
                             ? translation(
-                                  "lastModified",
+                                  "last_modified",
                                   new Date(
                                       note.lastModifiedDate
                                   ).toLocaleString()
@@ -111,7 +111,7 @@ export function NoteListItem({
                     <ListItemRightColumn>
                         <Button
                             onClick={(event) => onDeleteClick(event, note.id)}
-                            ariaLabel={translation("nodeDelete")}
+                            ariaLabel={translation("note_delete")}
                             image={"delete-24px.svg"}
                             type={ButtonType.NoBackground}
                         />
