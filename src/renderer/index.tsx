@@ -15,7 +15,7 @@ import {
     getLastFolderPathOpened,
     setLastFolderPathOpened,
 } from "./services/config"
-import { getTranslation } from "./services/translation"
+import { getTranslation } from "../shared/services/translation"
 import { getLastPathItem } from "./services/util"
 import "./index.css"
 

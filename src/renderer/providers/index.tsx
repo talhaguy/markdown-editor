@@ -4,7 +4,7 @@ import {
     GetLastFolderPathOpenedFunc,
     SetLastFolderPathOpenedFunc,
 } from "../services/config"
-import { GetTranslationFunc } from "../services/translation"
+import { GetTranslationFunc } from "../../shared/services/translation"
 import { GetLastPathItemFunc } from "../services/util"
 
 export const MainToRendererApiContext = React.createContext<

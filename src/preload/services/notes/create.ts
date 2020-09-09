@@ -1,6 +1,7 @@
 import { promises as fsPromises } from "fs"
 import path from "path"
 import { prependZeroesToSingleDigit } from "../utils"
+import { GetTranslationFunc } from "../../../shared/services/translation"
 
 function createNoteFileName() {
     const date = new Date()
@@ -25,12 +26,13 @@ function createNoteFileName() {
 export function createNewNote(
     nodeFsPromises: typeof fsPromises,
     nodePath: typeof path,
+    translate: GetTranslationFunc,
     folderPath: string
 ) {
     const fileName = createNoteFileName()
     const filePath = nodePath.join(folderPath, fileName)
     return nodeFsPromises
-        .writeFile(filePath, "initial file contents...", {
+        .writeFile(filePath, translate("new_note_placeholder"), {
             encoding: "utf8",
         })
         .then(() => {

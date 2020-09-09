@@ -2,11 +2,33 @@ import { promises as fsPromises } from "fs"
 import path from "path"
 import { NoteListMap } from "../../../models"
 import { GetLinesOfFileFunc } from "../fileSystem"
+import { GetTranslationFunc } from "../../../shared/services/translation"
+
+export interface GetTextForDisplayFunc {
+    (str: string | undefined, maxLength: number): string
+}
+
+export function getTextForDisplayFactory(translate: GetTranslationFunc) {
+    const getTextForDisplay: GetTextForDisplayFunc = (
+        str: string | undefined,
+        maxLength: number
+    ) => {
+        if (typeof str !== "undefined") {
+            const append =
+                str.length - 1 > maxLength ? translate("ellipses") : ""
+            return str.slice(0, maxLength) + append
+        } else {
+            return translate("not_available_short")
+        }
+    }
+    return getTextForDisplay
+}
 
 export function getNotesInFolder(
     nodeFsPromises: typeof fsPromises,
     nodePath: typeof path,
     getLinesOfFile: GetLinesOfFileFunc,
+    getTextForDisplay: GetTextForDisplayFunc,
     folderPath: string
 ) {
     console.log("preload - getNotesInFolder()", nodeFsPromises)
@@ -56,12 +78,14 @@ export function getNotesInFolder(
                     const filePath = nodePath.join(folderPath, mdFileName)
 
                     getLinesOfFile(filePath, 2).then((lines) => {
-                        noteListMap[mdFileName].title = lines[0]
-                            ? lines[0].slice(0, 20) + "..."
-                            : "N/A"
-                        noteListMap[mdFileName].preview = lines[1]
-                            ? lines[1].slice(0, 20) + "..."
-                            : ""
+                        noteListMap[mdFileName].title = getTextForDisplay(
+                            lines[0],
+                            30
+                        )
+                        noteListMap[mdFileName].preview = getTextForDisplay(
+                            lines[1],
+                            30
+                        )
 
                         incrementNumNotesDataCompleted(noteListMap, mdFileName)
                         resolvePromiseIfDataComplete(noteListMap)

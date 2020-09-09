@@ -5,20 +5,29 @@ import { createNewNote as _createNewNote } from "./create"
 import {
     getNotesInFolder as _getNotesInFolder,
     getNoteContent as _getNoteContent,
+    getTextForDisplayFactory,
 } from "./read"
 import { saveNote as _saveNote } from "./update"
 import { deleteNote as _deleteNote } from "./delete"
 import { startNotesWatch as _startNotesWatch } from "./watch"
 import { getLinesOfFile } from "../fileSystem"
 import { NoteListMap } from "../../../models"
+import { getTranslation } from "../../../shared/services/translation"
 
 export interface CreateNewNoteFunc {
     (folderPath: string): Promise<string>
 }
 
-export const createNewNote: CreateNewNoteFunc = ((fsPromises, path) => (
-    folderPath
-) => _createNewNote(fsPromises, path, folderPath))(fsPromises, path)
+export const createNewNote: CreateNewNoteFunc = ((
+    fsPromises,
+    path,
+    getTranslation
+) => (folderPath) =>
+    _createNewNote(fsPromises, path, getTranslation, folderPath))(
+    fsPromises,
+    path,
+    getTranslation
+)
 
 export interface GetNotesInFolderFunc {
     (folderPath: string): Promise<NoteListMap>
@@ -27,12 +36,20 @@ export interface GetNotesInFolderFunc {
 export const getNotesInFolder: GetNotesInFolderFunc = ((
     fsPromises,
     path,
-    getLinesOfFile
+    getLinesOfFile,
+    getTextForDisplay
 ) => (folderPath) =>
-    _getNotesInFolder(fsPromises, path, getLinesOfFile, folderPath))(
+    _getNotesInFolder(
+        fsPromises,
+        path,
+        getLinesOfFile,
+        getTextForDisplay,
+        folderPath
+    ))(
     fsPromises,
     path,
-    getLinesOfFile
+    getLinesOfFile,
+    getTextForDisplayFactory(getTranslation)
 )
 
 export interface GetNoteContentFunc {

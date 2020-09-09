@@ -4,5 +4,8 @@
     "chooseFolderButton": "Choose Folder",
     "newNoteButton": "New Note",
     "lastModified": "Last Edited {0}",
-    "nodeDelete": "Delete"
+    "nodeDelete": "Delete",
+    "not_available_short": "N/A",
+    "ellipses": "...",
+    "new_note_placeholder": "Type something here..."
 }
