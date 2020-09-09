@@ -3,5 +3,6 @@
     "app_version": "v1.0",
     "chooseFolderButton": "Choose Folder",
     "newNoteButton": "New Note",
-    "lastModified": "Last Edited {0}"
+    "lastModified": "Last Edited {0}",
+    "nodeDelete": "Delete"
 }

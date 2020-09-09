@@ -2,6 +2,7 @@ import React, { MouseEvent, useContext } from "react"
 import styled from "styled-components"
 import { TranslationContext } from "../providers"
 import { NoteListItem } from "../../models"
+import { Button, ButtonType } from "./Button"
 
 const ListItem = styled.li<Pick<NoteListItemProps, "isSelected">>`
     cursor: pointer;
@@ -31,10 +32,22 @@ const ListItemContent = styled.div<Pick<NoteListItemProps, "isSelected">>`
     border-top: 0.1rem solid var(--color-creamGreen);
     font-size: 1.3rem;
     padding: 1.5rem 0;
+    display: flex;
+    align-items: center;
 
     ${ListItem}:last-child & {
         border-bottom: 0.1rem solid var(--color-creamGreen);
     }
+`
+
+const ListItemLeftColumn = styled.div`
+    flex-grow: 1;
+`
+
+const ListItemRightColumn = styled.div`
+    margin-left: 1rem;
+    width: 2.8rem;
+    height: 2.8rem;
 `
 
 const NoteTitle = styled.div`
@@ -45,6 +58,7 @@ const NotePreview = styled.div``
 
 const NoteDateModifiedText = styled.div`
     font-style: italic;
+    white-space: nowrap;
 `
 
 interface NoteListItemProps {
@@ -63,7 +77,7 @@ export function NoteListItem({
     const { translation } = useContext(TranslationContext)
 
     const onDeleteClick = (
-        event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+        event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>,
         fileName: string
     ) => {
         event.stopPropagation()
@@ -77,19 +91,34 @@ export function NoteListItem({
             isSelected={isSelected}
         >
             <ListItemContent isSelected={isSelected}>
-                <NoteTitle>{note.title ? note.title : "N/A"}</NoteTitle>
-                <NotePreview>{note.preview ? note.preview : "N/A"}</NotePreview>
-                <NoteDateModifiedText>
-                    {note.lastModifiedDate
-                        ? translation(
-                              "lastModified",
-                              new Date(note.lastModifiedDate).toLocaleString()
-                          )
-                        : "N/A"}
-                </NoteDateModifiedText>
-                <button onClick={(event) => onDeleteClick(event, note.id)}>
-                    Delete
-                </button>
+                <ListItemLeftColumn>
+                    <NoteTitle>{note.title ? note.title : "N/A"}</NoteTitle>
+                    <NotePreview>
+                        {note.preview ? note.preview : "N/A"}
+                    </NotePreview>
+                    <NoteDateModifiedText>
+                        {note.lastModifiedDate
+                            ? translation(
+                                  "lastModified",
+                                  new Date(
+                                      note.lastModifiedDate
+                                  ).toLocaleString()
+                              )
+                            : "N/A"}
+                    </NoteDateModifiedText>
+                </ListItemLeftColumn>
+                {isSelected ? (
+                    <ListItemRightColumn>
+                        <Button
+                            onClick={(event) => onDeleteClick(event, note.id)}
+                            ariaLabel={translation("nodeDelete")}
+                            image={"delete-24px.svg"}
+                            type={ButtonType.NoBackground}
+                        />
+                    </ListItemRightColumn>
+                ) : (
+                    ""
+                )}
             </ListItemContent>
         </ListItem>
     )
