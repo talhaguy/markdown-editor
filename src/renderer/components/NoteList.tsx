@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { NoteListItem } from "./NoteListItem"
 
 const List = styled.ul`
-    overflow-y: scroll;
+    overflow-y: auto;
     height: 100%;
     margin: 0;
     padding: 0;

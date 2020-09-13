@@ -13,6 +13,7 @@ export function useCodeMirror(noteFileName: string, noteContent: string) {
                 textAreaRef.current,
                 {
                     mode: "gfm",
+                    theme: "monokai custom",
                 }
             )
             codeMirrorRef.current.focus()

@@ -22,8 +22,9 @@ const columnShared = `
 `
 
 const LeftColumn = styled.div`
-    width: 270px;
+    flex: 0 0 27rem;
     background-color: var(--color-lightJet);
+    box-shadow: 0rem -2rem 1rem rgba(0, 0, 0, 0.25);
     ${columnShared}
 `
 
