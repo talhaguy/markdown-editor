@@ -1,5 +1,5 @@
 import { Dialog, IpcMainEvent } from "electron"
-import { IPCEvent } from "../../../../constants"
+import { IPCEvent } from "../../../constants"
 import { getSelectedFolderFilePath } from "../service/processDialogReturn"
 
 export function onSelectFolderStart(dialog: Dialog, event: IpcMainEvent) {

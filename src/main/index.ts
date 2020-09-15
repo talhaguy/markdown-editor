@@ -1,11 +1,7 @@
 import { app, ipcMain } from "electron"
 import { IPCEvent } from "../constants"
-import {
-    createWindowAfterReady,
-    onActivate,
-    onAllWindowsClosed,
-} from "./services/app"
-import { onSelectFolderStart } from "./services/dialog"
+import { createWindowAfterReady, onActivate, onAllWindowsClosed } from "./app"
+import { onSelectFolderStart } from "./dialog"
 
 console.log("main...")
 
