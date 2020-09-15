@@ -7,5 +7,6 @@
     "note_delete": "Delete",
     "not_available_short": "N/A",
     "ellipses": "...",
-    "new_note_placeholder": "Type something here..."
+    "new_note_placeholder": "Type something here...",
+    "no_note_open": "No note open"
 }

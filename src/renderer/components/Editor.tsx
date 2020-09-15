@@ -1,9 +1,10 @@
-import React from "react"
+import React, { useContext } from "react"
 import "codemirror/mode/gfm/gfm"
 import "codemirror/lib/codemirror.css"
 import "codemirror/theme/monokai.css"
 import { useCodeMirror, useCodeMirrorSave } from "../hooks"
 import styled from "styled-components"
+import { TranslationContext } from "../providers"
 
 const Container = styled.div`
     background-color: var(--color-jet);
@@ -38,6 +39,16 @@ const Container = styled.div`
     }
 `
 
+const NoNoteOpen = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.3rem;
+    color: var(--color-white);
+    font-style: italic;
+`
+
 interface EditorProps {
     noteContent: string
     folderPath: string
@@ -51,6 +62,7 @@ export function Editor({
     noteFileName,
     refreshNotesList,
 }: EditorProps) {
+    const { translation } = useContext(TranslationContext)
     const [codeMirrorRef, textAreaRef] = useCodeMirror(
         noteFileName,
         noteContent
@@ -68,7 +80,13 @@ export function Editor({
     return (
         <Container>
             <textarea ref={textAreaRef} style={{ display: "none" }}></textarea>
-            {!validNoteOpen ? <>No note open</> : ""}
+            {!validNoteOpen ? (
+                <NoNoteOpen>
+                    <span>{translation("no_note_open")}</span>
+                </NoNoteOpen>
+            ) : (
+                ""
+            )}
         </Container>
     )
 }
