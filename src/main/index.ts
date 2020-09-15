@@ -1,5 +1,5 @@
 import { app, ipcMain } from "electron"
-import { IPCEvent } from "../constants"
+import { IPCEvent } from "../shared/constants"
 import { createWindowAfterReady, onActivate, onAllWindowsClosed } from "./app"
 import { onSelectFolderStart } from "./dialog"
 

@@ -1,5 +1,5 @@
 import { IpcRenderer, IpcRendererEvent } from "electron"
-import { IPCEvent } from "../../../constants"
+import { IPCEvent } from "../../../shared/constants"
 
 export function selectFolder(ipcRenderer: IpcRenderer) {
     return new Promise<string>((res, rej) => {

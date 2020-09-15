@@ -1,4 +1,4 @@
-import { OS } from "../../../constants"
+import { OS } from "../../../shared/constants"
 
 export interface GetOSFunc {
     (): OS

@@ -1,6 +1,6 @@
 import path from "path"
 import { BrowserWindow, App } from "electron"
-import { Views } from "../../../constants"
+import { Views } from "../../../shared/constants"
 
 export function createWindowAfterReady(nodePath: typeof path) {
     // Create the browser window.
