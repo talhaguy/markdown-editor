@@ -1,6 +1,6 @@
 import { promises as fsPromises } from "fs"
 import path from "path"
-import { NoteListMap } from "../../../models"
+import { NoteListMap } from "../../../shared/models"
 import { GetLinesOfFileFunc } from "../fileSystem"
 import { GetTranslationFunc } from "../../../shared/services/translation"
 

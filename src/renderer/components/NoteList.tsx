@@ -1,5 +1,5 @@
 import React from "react"
-import { NoteListItem as NoteListItemModel } from "../../models"
+import { NoteListItem as NoteListItemModel } from "../../shared/models"
 import styled from "styled-components"
 import { NoteListItem } from "./NoteListItem"
 

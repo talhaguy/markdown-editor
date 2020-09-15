@@ -1,7 +1,7 @@
 import React, { MouseEvent, useContext } from "react"
 import styled from "styled-components"
 import { TranslationContext } from "../providers"
-import { NoteListItem } from "../../models"
+import { NoteListItem } from "../../shared/models"
 import { Button, ButtonType } from "./Button"
 
 const ListItem = styled.li<Pick<NoteListItemProps, "isSelected">>`

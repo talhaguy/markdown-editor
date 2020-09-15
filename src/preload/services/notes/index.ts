@@ -11,7 +11,7 @@ import { saveNote as _saveNote } from "./update"
 import { deleteNote as _deleteNote } from "./delete"
 import { startNotesWatch as _startNotesWatch } from "./watch"
 import { getLinesOfFile } from "../fileSystem"
-import { NoteListMap } from "../../../models"
+import { NoteListMap } from "../../../shared/models"
 import { getTranslation } from "../../../shared/services/translation"
 
 export interface CreateNewNoteFunc {

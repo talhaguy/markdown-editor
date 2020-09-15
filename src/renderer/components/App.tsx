@@ -5,7 +5,7 @@ import { AppTitle } from "./AppTitle"
 import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
 import { MainToRendererApiContext, ConfigContext } from "../providers"
-import { NoteListMap } from "../../models"
+import { NoteListMap } from "../../shared/models"
 import { SetLastFolderPathOpenedFunc } from "../services/config"
 
 const Container = styled.div`
