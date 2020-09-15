@@ -1,5 +1,6 @@
 import { Dialog, IpcMainEvent } from "electron"
-import { IPCEvent } from "../../../constants"
+import { IPCEvent } from "../../../../constants"
+import { getSelectedFolderFilePath } from "../service/processDialogReturn"
 
 export function onSelectFolderStart(dialog: Dialog, event: IpcMainEvent) {
     dialog
@@ -7,14 +8,11 @@ export function onSelectFolderStart(dialog: Dialog, event: IpcMainEvent) {
             properties: ["openDirectory"],
             message: "Choose a folder",
         })
-        .then((value) => {
-            if (!value.canceled) {
-                event.sender.send(
-                    IPCEvent.SelectFolderSuccess,
-                    value.filePaths[0]
-                )
-                return
-            }
+        .then(getSelectedFolderFilePath)
+        .then((filePath) => {
+            event.sender.send(IPCEvent.SelectFolderSuccess, filePath)
+        })
+        .catch(() => {
             event.sender.send(IPCEvent.SelectFolderCancel)
         })
 }

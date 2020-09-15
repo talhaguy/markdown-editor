@@ -1,4 +1,4 @@
-import { onSelectFolderStart as _onSelectFolderStart } from "./folder"
+import { onSelectFolderStart as _onSelectFolderStart } from "./integration/openDialog"
 import { dialog, IpcMainEvent } from "electron"
 
 export const onSelectFolderStart = ((dialog) => (event: IpcMainEvent) =>

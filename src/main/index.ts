@@ -5,7 +5,7 @@ import {
     onActivate,
     onAllWindowsClosed,
 } from "./services/app"
-import { onSelectFolderStart } from "./services/ipcEvents"
+import { onSelectFolderStart } from "./services/dialog"
 
 console.log("main...")
 

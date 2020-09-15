@@ -39,7 +39,7 @@ export function NoteList({
                     ))}
                 </List>
             ) : (
-                <span>No notes</span>
+                ""
             )}
         </>
     )
