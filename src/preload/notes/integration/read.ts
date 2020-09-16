@@ -2,27 +2,13 @@ import { promises as fsPromises } from "fs"
 import path from "path"
 import { NoteListMap } from "../../../shared/models"
 import { GetLinesOfFileFunc } from "../../fileSystem"
-import { GetTranslationFunc } from "../../../shared/services/translation"
-
-export interface GetTextForDisplayFunc {
-    (str: string | undefined, maxLength: number): string
-}
-
-export function getTextForDisplayFactory(translate: GetTranslationFunc) {
-    const getTextForDisplay: GetTextForDisplayFunc = (
-        str: string | undefined,
-        maxLength: number
-    ) => {
-        if (typeof str !== "undefined") {
-            const append =
-                str.length - 1 > maxLength ? translate("ellipses") : ""
-            return str.slice(0, maxLength) + append
-        } else {
-            return translate("not_available_short")
-        }
-    }
-    return getTextForDisplay
-}
+import { GetTextForDisplayFunc } from "../service/file"
+import { getMarkdownFilesNamesFromList } from "../service/file"
+import {
+    createInitialNoteListMap,
+    incrementNumNotesCompleted,
+    isNotesDataComplete,
+} from "../service/readHelpers"
 
 export function getNotesInFolder(
     nodeFsPromises: typeof fsPromises,
@@ -38,41 +24,30 @@ export function getNotesInFolder(
             nodeFsPromises
         )
 
-        const markdownFiles = files.filter((file) => file.indexOf(".md") > -1)
+        const markdownFiles = getMarkdownFilesNamesFromList(files)
 
         return new Promise<NoteListMap>((res, rej) => {
             let numNotesDataCompleted = 0
 
-            const incrementNumNotesDataCompleted = (
+            const resolvePromiseIfDataComplete = (
                 noteListMap: NoteListMap,
-                id: string
+                numNotesDataCompleted: number
             ) => {
-                if (
-                    noteListMap[id].title !== null &&
-                    noteListMap[id].preview !== null &&
-                    noteListMap[id].lastModifiedDate
-                ) {
-                    numNotesDataCompleted += 1
-                }
-            }
-
-            const resolvePromiseIfDataComplete = (noteListMap: NoteListMap) => {
                 // if all files have data collected, fullfill promise
-                if (markdownFiles.length === numNotesDataCompleted) {
+                if (
+                    isNotesDataComplete(
+                        markdownFiles.length,
+                        numNotesDataCompleted
+                    )
+                ) {
                     res(noteListMap)
                 }
             }
 
             if (markdownFiles.length > 0) {
-                let noteListMap: NoteListMap = {}
-                markdownFiles.forEach((mdFileName) => {
-                    noteListMap[mdFileName] = {
-                        id: mdFileName,
-                        title: null,
-                        preview: null,
-                        lastModifiedDate: null,
-                    }
-                })
+                let noteListMap: NoteListMap = createInitialNoteListMap(
+                    markdownFiles
+                )
 
                 markdownFiles.forEach((mdFileName) => {
                     const filePath = nodePath.join(folderPath, mdFileName)
@@ -87,8 +62,14 @@ export function getNotesInFolder(
                             30
                         )
 
-                        incrementNumNotesDataCompleted(noteListMap, mdFileName)
-                        resolvePromiseIfDataComplete(noteListMap)
+                        numNotesDataCompleted = incrementNumNotesCompleted(
+                            numNotesDataCompleted,
+                            noteListMap[mdFileName]
+                        )
+                        resolvePromiseIfDataComplete(
+                            noteListMap,
+                            numNotesDataCompleted
+                        )
                     })
 
                     nodeFsPromises.stat(filePath).then(({ mtime }) => {
@@ -96,8 +77,14 @@ export function getNotesInFolder(
                             mdFileName
                         ].lastModifiedDate = mtime.getTime()
 
-                        incrementNumNotesDataCompleted(noteListMap, mdFileName)
-                        resolvePromiseIfDataComplete(noteListMap)
+                        numNotesDataCompleted = incrementNumNotesCompleted(
+                            numNotesDataCompleted,
+                            noteListMap[mdFileName]
+                        )
+                        resolvePromiseIfDataComplete(
+                            noteListMap,
+                            numNotesDataCompleted
+                        )
                     })
                 })
             }

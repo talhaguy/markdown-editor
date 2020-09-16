@@ -1,18 +1,18 @@
 import { promises as fsPromises } from "fs"
 import path from "path"
 import chokidar from "chokidar"
-import { createNewNote as _createNewNote } from "./create"
+import { createNewNote as _createNewNote } from "./integration/create"
 import {
     getNotesInFolder as _getNotesInFolder,
     getNoteContent as _getNoteContent,
-    getTextForDisplayFactory,
-} from "./read"
-import { saveNote as _saveNote } from "./update"
-import { deleteNote as _deleteNote } from "./delete"
-import { startNotesWatch as _startNotesWatch } from "./watch"
-import { getLinesOfFile } from "../../fileSystem"
-import { NoteListMap } from "../../../shared/models"
-import { getTranslation } from "../../../shared/services/translation"
+} from "./integration/read"
+import { saveNote as _saveNote } from "./integration/update"
+import { deleteNote as _deleteNote } from "./integration/delete"
+import { startNotesWatch as _startNotesWatch } from "./integration/watch"
+import { getLinesOfFile } from "../fileSystem"
+import { NoteListMap } from "../../shared/models"
+import { getTranslation } from "../../shared/services/translation"
+import { getTextForDisplayFactory } from "./service/file"
 
 export interface CreateNewNoteFunc {
     (folderPath: string): Promise<string>

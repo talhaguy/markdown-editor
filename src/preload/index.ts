@@ -12,7 +12,7 @@ import {
     saveNote,
     deleteNote,
     startNotesWatch,
-} from "./services/notes"
+} from "./notes"
 import { getOS, GetOSFunc } from "./services/utils"
 
 console.log("preload js")
