@@ -1,4 +1,4 @@
-import { selectFolder as _selectFolder } from "./folder"
+import { selectFolder as _selectFolder } from "./integration/folder"
 import { ipcRenderer } from "electron"
 
 export interface SelectFolderFunc {

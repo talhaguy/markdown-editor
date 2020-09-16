@@ -1,4 +1,4 @@
-import { selectFolder, SelectFolderFunc } from "./services/ipcEvents"
+import { selectFolder, SelectFolderFunc } from "./ipcEvents"
 import {
     CreateNewNoteFunc,
     GetNotesInFolderFunc,
