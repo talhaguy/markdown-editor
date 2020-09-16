@@ -1,8 +1,7 @@
 import { prependZeroesToSingleDigit } from "../../services/utils"
 import { GetTranslationFunc } from "../../../shared/services/translation"
 
-export function createNoteFileName() {
-    const date = new Date()
+export function createNoteFileName(date: Date) {
     return `${prependZeroesToSingleDigit(
         date.getMonth() + 1,
         1

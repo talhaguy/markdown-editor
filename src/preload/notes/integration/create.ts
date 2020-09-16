@@ -9,7 +9,7 @@ export function createNewNote(
     translate: GetTranslationFunc,
     folderPath: string
 ) {
-    const fileName = createNoteFileName()
+    const fileName = createNoteFileName(new Date())
     const filePath = nodePath.join(folderPath, fileName)
     return nodeFsPromises
         .writeFile(filePath, translate("new_note_placeholder"), {
