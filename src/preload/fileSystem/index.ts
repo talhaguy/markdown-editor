@@ -1,6 +1,6 @@
 import readline from "readline"
 import fs from "fs"
-import { getLinesOfFile as _getLinesOfFile } from "./read"
+import { getLinesOfFile as _getLinesOfFile } from "./integration/readLine"
 
 export interface GetLinesOfFileFunc {
     (pathToFile: string, numLines: number): Promise<string[]>

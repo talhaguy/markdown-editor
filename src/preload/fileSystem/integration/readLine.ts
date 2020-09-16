@@ -1,11 +1,16 @@
 import readline from "readline"
 import fs from "fs"
+import {
+    accumulateLines,
+    shouldGetNextLine,
+    shouldStopGettingLines,
+} from "../service/readLineUtility"
 
 export function getLinesOfFile(
     nodeReadline: typeof readline,
     nodeFs: typeof fs,
     pathToFile: string,
-    numLines: number
+    numLinesToGet: number
 ) {
     return new Promise<string[]>((res, rej) => {
         const rl = nodeReadline.createInterface({
@@ -16,13 +21,11 @@ export function getLinesOfFile(
 
         let lines = []
         rl.on("line", (line) => {
-            if (lines.length < numLines) {
-                if (line.trim() !== "") {
-                    lines.push(line)
-                }
+            if (shouldGetNextLine(lines, numLinesToGet)) {
+                lines = accumulateLines(line, lines)
             }
 
-            if (lines.length === numLines) {
+            if (shouldStopGettingLines(lines, numLinesToGet)) {
                 rl.close()
             }
         })

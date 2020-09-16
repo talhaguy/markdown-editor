@@ -1,7 +1,7 @@
 import { promises as fsPromises } from "fs"
 import path from "path"
 import { NoteListMap } from "../../../shared/models"
-import { GetLinesOfFileFunc } from "../fileSystem"
+import { GetLinesOfFileFunc } from "../../fileSystem"
 import { GetTranslationFunc } from "../../../shared/services/translation"
 
 export interface GetTextForDisplayFunc {
