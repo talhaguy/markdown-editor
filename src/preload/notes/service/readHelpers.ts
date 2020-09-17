@@ -32,5 +32,5 @@ export function isNotesDataComplete(
     numMarkdownFiles: number,
     numNotesDataCompleted: number
 ) {
-    return numMarkdownFiles === numNotesDataCompleted
+    return numMarkdownFiles <= numNotesDataCompleted
 }
