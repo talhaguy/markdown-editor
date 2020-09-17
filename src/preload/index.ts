@@ -13,7 +13,7 @@ import {
     deleteNote,
     startNotesWatch,
 } from "./notes"
-import { getOS, GetOSFunc } from "./services/utils"
+import { getOS, GetOSFunc } from "./utils"
 
 console.log("preload js")
 
