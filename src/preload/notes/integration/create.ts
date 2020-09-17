@@ -1,7 +1,7 @@
 import { promises as fsPromises } from "fs"
 import path from "path"
 import { createNoteFileName } from "../service/file"
-import { GetTranslationFunc } from "../../../shared/services/translation"
+import { GetTranslationFunc } from "../../../shared/translation"
 
 export function createNewNote(
     nodeFsPromises: typeof fsPromises,

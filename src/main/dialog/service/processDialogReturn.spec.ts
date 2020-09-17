@@ -1,5 +1,5 @@
 import { OpenDialogReturnValue } from "electron"
-import { ErrorCode } from "../../../shared/services/error"
+import { ErrorCode } from "../../../shared/error"
 import { getSelectedFolderFilePath } from "./processDialogReturn"
 
 describe("processDialogReturn", () => {

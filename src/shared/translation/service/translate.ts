@@ -1,4 +1,4 @@
-import { Translation } from "./Translation"
+import { Translation } from "../models/Translation"
 
 export function getTranslation(
     translations: Translation,

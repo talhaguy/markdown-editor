@@ -1,5 +1,5 @@
 import { OpenDialogReturnValue } from "electron"
-import { createError, ErrorCode } from "../../../shared/services/error"
+import { createError, ErrorCode } from "../../../shared/error"
 
 export function getSelectedFolderFilePath(value: OpenDialogReturnValue) {
     if (!value.canceled) {

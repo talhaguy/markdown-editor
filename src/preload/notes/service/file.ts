@@ -1,5 +1,5 @@
 import { prependZeroesToSingleDigit } from "../../utils"
-import { GetTranslationFunc } from "../../../shared/services/translation"
+import { GetTranslationFunc } from "../../../shared/translation"
 
 export function createNoteFileName(date: Date) {
     return `${prependZeroesToSingleDigit(

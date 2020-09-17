@@ -11,7 +11,7 @@ import { deleteNote as _deleteNote } from "./integration/delete"
 import { startNotesWatch as _startNotesWatch } from "./integration/watch"
 import { getLinesOfFile } from "../fileSystem"
 import { NoteListMap } from "../../shared/models"
-import { getTranslation } from "../../shared/services/translation"
+import { getTranslation } from "../../shared/translation"
 import { getTextForDisplayFactory } from "./service/file"
 
 export interface CreateNewNoteFunc {
