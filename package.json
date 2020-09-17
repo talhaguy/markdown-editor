@@ -5,6 +5,7 @@
     "main": "dist/index.js",
     "scripts": {
         "test": "jest",
+        "test:coverage": "jest --collectCoverage",
         "test:watch": "jest --watch",
         "clean": "rm -rf dist",
         "build:renderer": "parcel build ./src/index.html --public-url ./",

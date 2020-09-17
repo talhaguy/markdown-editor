@@ -41,7 +41,7 @@ interface ButtonProps {
     ) => void
     ariaLabel?: string
     image?: string
-    type: ButtonType
+    type?: ButtonType
     children?: ReactNode
 }
 
