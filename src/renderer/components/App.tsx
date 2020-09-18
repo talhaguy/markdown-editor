@@ -6,7 +6,7 @@ import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
 import { MainToRendererApiContext, ConfigContext } from "../providers"
 import { NoteListMap } from "../../shared/models"
-import { SetLastFolderPathOpenedFunc } from "../services/config"
+import { useLastFolderPathOpened } from "../hooks"
 
 const Container = styled.div`
     display: flex;
@@ -37,24 +37,6 @@ const RightColumn = styled.div`
     flex-grow: 1;
     ${columnShared}
 `
-
-export function useLastFolderPathOpened() {
-    const { getLastFolderPathOpened, setLastFolderPathOpened } = useContext(
-        ConfigContext
-    )
-
-    const [folderPath, setFolderPath] = useState<string>(null)
-
-    // get last folder opened once
-    useEffect(() => {
-        setFolderPath(getLastFolderPathOpened())
-    }, [])
-
-    return [folderPath, setLastFolderPathOpened] as [
-        string | null,
-        SetLastFolderPathOpenedFunc
-    ]
-}
 
 export function App() {
     const [folderPath, setFolderPath] = useState(null)

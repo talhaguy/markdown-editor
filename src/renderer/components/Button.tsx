@@ -65,7 +65,7 @@ export function Button({
             href="#"
             role="button"
         >
-            {image ? <img src={image} /> : ""}
+            {image ? <img src={image} data-testid="img" /> : ""}
             {children ? <Label>{children}</Label> : ""}
         </Container>
     )

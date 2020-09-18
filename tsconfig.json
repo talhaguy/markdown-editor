@@ -1,7 +1,11 @@
 {
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true,
-        "jsx": "react"
-    }
+        "jsx": "react",
+        "lib": ["dom", "esnext"],
+        "module": "esnext",
+        "esModuleInterop": true,
+        "resolveJsonModule": true
+    },
+    "exclude": ["node_modules"]
 }
