@@ -85,6 +85,8 @@ export function NoteListItem({
         onDeleteBtnClick(fileName)
     }
 
+    const notAvailableText = translation("not_available_short")
+
     return (
         <ListItem
             onClick={() => (!isSelected ? onSelectNote(note.id) : null)}
@@ -92,9 +94,11 @@ export function NoteListItem({
         >
             <ListItemContent isSelected={isSelected}>
                 <ListItemLeftColumn>
-                    <NoteTitle>{note.title ? note.title : "N/A"}</NoteTitle>
+                    <NoteTitle>
+                        {note.title ? note.title : notAvailableText}
+                    </NoteTitle>
                     <NotePreview>
-                        {note.preview ? note.preview : "N/A"}
+                        {note.preview ? note.preview : notAvailableText}
                     </NotePreview>
                     <NoteDateModifiedText>
                         {note.lastModifiedDate
@@ -104,7 +108,7 @@ export function NoteListItem({
                                       note.lastModifiedDate
                                   ).toLocaleString()
                               )
-                            : "N/A"}
+                            : notAvailableText}
                     </NoteDateModifiedText>
                 </ListItemLeftColumn>
                 {isSelected ? (
