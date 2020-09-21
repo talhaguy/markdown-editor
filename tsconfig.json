@@ -5,6 +5,7 @@
         "lib": ["dom", "esnext"],
         "module": "esnext",
         "esModuleInterop": true,
+        "moduleResolution": "node",
         "resolveJsonModule": true
     },
     "exclude": ["node_modules"]

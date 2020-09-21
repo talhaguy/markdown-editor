@@ -56,7 +56,7 @@ export function Controls({
                 <SelectedFolder>
                     {folderName
                         ? getLastPathItem(os.current, folderName)
-                        : "N/A"}
+                        : translation("not_available_short")}
                 </SelectedFolder>
             </FolderRow>
             {folderName ? (
