@@ -81,7 +81,6 @@ export function NoteListItem({
         fileName: string
     ) => {
         event.stopPropagation()
-        console.log("delete clicked")
         onDeleteBtnClick(fileName)
     }
 
@@ -91,6 +90,7 @@ export function NoteListItem({
         <ListItem
             onClick={() => (!isSelected ? onSelectNote(note.id) : null)}
             isSelected={isSelected}
+            data-testid="list-item"
         >
             <ListItemContent isSelected={isSelected}>
                 <ListItemLeftColumn>
