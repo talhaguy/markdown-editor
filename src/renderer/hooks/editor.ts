@@ -1,8 +1,8 @@
 import { useEffect, useRef, useContext, MutableRefObject } from "react"
-import CodeMirror from "codemirror"
-import { MainToRendererApiContext } from "../providers"
+import { CodeMirrorContext, MainToRendererApiContext } from "../providers"
 
 export function useCodeMirror(noteFileName: string, noteContent: string) {
+    const CodeMirror = useContext(CodeMirrorContext)
     const textAreaRef = useRef<HTMLTextAreaElement>()
     const codeMirrorRef = useRef<CodeMirror.EditorFromTextArea>()
 
@@ -16,6 +16,9 @@ export function useCodeMirror(noteFileName: string, noteContent: string) {
                     theme: "monokai custom",
                 }
             )
+            codeMirrorRef.current
+                .getWrapperElement()
+                .setAttribute("data-testid", "code-mirror")
             codeMirrorRef.current.focus()
         }
 
@@ -61,7 +64,6 @@ export function useCodeMirrorSave(
             .then(() => {
                 console.log("...done saving")
 
-                // TODO: refresh notes list
                 refreshNotesList()
             })
             .catch((err) => {

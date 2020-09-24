@@ -5,4 +5,8 @@ module.exports = {
     moduleNameMapper: {
         "\\.css$": "<rootDir>/__mocks__/styleMock.js",
     },
+    setupFilesAfterEnv: ["<rootDir>/testSetup/setupTests.ui.ts"],
+    collectCoverage: true,
+    collectCoverageFrom: ["src/**/*.(ts|tsx)"],
+    coveragePathIgnorePatterns: ["/constants/", "/models/"],
 }

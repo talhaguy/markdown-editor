@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react"
+import CodeMirror from "codemirror"
 import { MainToRendererApiMap } from "../../preload"
 import {
     GetLastFolderPathOpenedFunc,
@@ -38,6 +39,8 @@ export interface UtilServiceMap {
 
 export const UtilContext = React.createContext<UtilServiceMap>(null)
 
+export const CodeMirrorContext = React.createContext<typeof CodeMirror>(null)
+
 declare const _MainToRendererApi: MainToRendererApiMap
 
 const configValue: ConfigServiceMap = {
@@ -72,7 +75,9 @@ export const Providers = ({
         <ConfigContext.Provider value={config}>
             <TranslationContext.Provider value={translation}>
                 <UtilContext.Provider value={util}>
-                    {children}
+                    <CodeMirrorContext.Provider value={CodeMirror}>
+                        {children}
+                    </CodeMirrorContext.Provider>
                 </UtilContext.Provider>
             </TranslationContext.Provider>
         </ConfigContext.Provider>
