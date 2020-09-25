@@ -1,8 +1,8 @@
-import React, { MouseEvent } from "react"
+import React, { MouseEvent, useContext } from "react"
 import styled from "styled-components"
+import { TranslationContext } from "../providers"
 import { NoteListItem } from "../../shared/models"
 import { Button, ButtonType } from "./Button"
-import { GetTranslationFunc } from "../../shared/translation"
 
 const ListItem = styled.li<Pick<NoteListItemProps, "isSelected">>`
     cursor: pointer;
@@ -62,28 +62,33 @@ const NoteDateModifiedText = styled.div`
 `
 
 interface NoteListItemProps {
-    translation: GetTranslationFunc
     note: NoteListItem
-    onListItemClick: () => void
-    onDeleteClick: (
-        event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>,
-        fileName: string
-    ) => void
+    onSelectNote: (noteId: string) => void
+    onDeleteBtnClick: (fileName: string) => void
     isSelected: boolean
 }
 
 export function NoteListItem({
-    translation,
     note,
-    onDeleteClick,
+    onSelectNote,
+    onDeleteBtnClick,
     isSelected,
-    onListItemClick,
 }: NoteListItemProps) {
+    const { translation } = useContext(TranslationContext)
+
+    const onDeleteClick = (
+        event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>,
+        fileName: string
+    ) => {
+        event.stopPropagation()
+        onDeleteBtnClick(fileName)
+    }
+
     const notAvailableText = translation("not_available_short")
 
     return (
         <ListItem
-            onClick={onListItemClick}
+            onClick={() => (!isSelected ? onSelectNote(note.id) : null)}
             isSelected={isSelected}
             data-testid="list-item"
         >

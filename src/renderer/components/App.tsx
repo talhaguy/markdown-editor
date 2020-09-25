@@ -38,7 +38,7 @@ const RightColumn = styled.div`
     ${columnShared}
 `
 
-export function AppContainer() {
+export function App() {
     const [folderPath, setFolderPath] = useState(null)
     const [notesListMap, setNotesListMap] = useState<NoteListMap>({})
     const [selectedNoteId, setSelectedNoteId] = useState<string>(null)

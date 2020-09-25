@@ -1,7 +1,7 @@
 import React from "react"
 import { NoteListItem as NoteListItemModel } from "../../shared/models"
 import styled from "styled-components"
-import { NoteListItemContainer } from "./NoteListItemContainer"
+import { NoteListItem } from "./NoteListItem"
 
 const List = styled.ul`
     overflow-y: auto;
@@ -29,7 +29,7 @@ export function NoteList({
             {notes.length > 0 ? (
                 <List>
                     {notes.map((note, i) => (
-                        <NoteListItemContainer
+                        <NoteListItem
                             key={i}
                             note={note}
                             onSelectNote={onSelectNote}
