@@ -1,13 +1,12 @@
 {
     "name": "markdown-editor",
     "version": "1.0.0",
-    "description": "",
+    "description": "An electron app that allows you to take notes using markdown.",
     "main": "dist/index.js",
     "scripts": {
-        "test:unit": "jest --config=jest.config.unit.js",
-        "test:integration": "jest --config=jest.config.integration.js",
-        "test:ui": "jest --config=jest.config.ui.js",
-        "test": "jest --config=jest.config.js",
+        "test:main-preload-shared": "jest --config=jest.config.main-preload-shared.js",
+        "test:renderer": "jest --config=jest.config.renderer.js",
+        "test": "npm run test:main-preload-shared && npm run test:renderer",
         "clean": "rm -rf dist",
         "build:renderer": "parcel build ./src/index.html --public-url ./",
         "build:preload": "parcel build ./src/preload/index.ts --target node --out-file preload.js",

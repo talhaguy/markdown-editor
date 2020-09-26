@@ -17,5 +17,14 @@ describe("translate", () => {
                 "The weather is hot today. Tomorrow it is cold."
             )
         })
+
+        it("should return an empty string if no translation key is found", () => {
+            expect(getTranslation(translations, "some_unavailable_key")).toBe(
+                ""
+            )
+            expect(
+                getTranslation(translations, "another_unavailable_key")
+            ).toBe("")
+        })
     })
 })
