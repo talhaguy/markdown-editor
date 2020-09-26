@@ -2,3 +2,5 @@ node_modules
 dist
 .cache
 coverage
+MarkdownEditor-win32-x64
+MarkdownEditor-darwin-x64

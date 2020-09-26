@@ -5,8 +5,8 @@ import {
 } from "./integration/callbacks"
 import { BrowserWindow } from "electron"
 
-export const createWindowAfterReady = ((path) => () =>
-    _createWindowAfterReady(path))(path)
+export const createWindowAfterReady = ((path, process) => () =>
+    _createWindowAfterReady(path, process))(path, process)
 
 export { onAllWindowsClosed } from "./integration/callbacks"
 

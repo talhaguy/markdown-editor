@@ -1,8 +1,10 @@
 import path from "path"
 import { BrowserWindow, App } from "electron"
-import { Views } from "../../../shared/constants"
 
-export function createWindowAfterReady(nodePath: typeof path) {
+export function createWindowAfterReady(
+    nodePath: typeof path,
+    process: NodeJS.Process
+) {
     // Create the browser window.
     const win = new BrowserWindow({
         width: 800,
@@ -10,14 +12,17 @@ export function createWindowAfterReady(nodePath: typeof path) {
         webPreferences: {
             nodeIntegration: true,
             preload: nodePath.join(__dirname, "preload.js"),
+            // needs to be true for spectron to be able to access `app.browserWindow` and `app.client` properties
+            enableRemoteModule:
+                process.env.NODE_ENV === "spectron" ? true : false,
         },
     })
 
     // and load the index.html of the app.
-    win.loadFile(Views.Index)
+    win.loadFile(nodePath.join(__dirname, "index.html"))
 
     // Open the DevTools.
-    win.webContents.openDevTools()
+    // win.webContents.openDevTools()
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
