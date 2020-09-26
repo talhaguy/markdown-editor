@@ -94,13 +94,15 @@ export function NoteListItem({
         >
             <ListItemContent isSelected={isSelected}>
                 <ListItemLeftColumn>
-                    <NoteTitle>
+                    <NoteTitle data-testid={`${note.id}-title`}>
                         {note.title ? note.title : notAvailableText}
                     </NoteTitle>
-                    <NotePreview>
+                    <NotePreview data-testid={`${note.id}-preview`}>
                         {note.preview ? note.preview : notAvailableText}
                     </NotePreview>
-                    <NoteDateModifiedText>
+                    <NoteDateModifiedText
+                        data-testid={`${note.id}-last-modified-date`}
+                    >
                         {note.lastModifiedDate
                             ? translation(
                                   "last_modified",
