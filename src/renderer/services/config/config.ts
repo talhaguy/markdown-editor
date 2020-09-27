@@ -5,6 +5,5 @@ export function getLastFolderPathOpened(localStorage: Storage) {
 }
 
 export function setLastFolderPathOpened(localStorage: Storage, value: string) {
-    console.log("DEBUG: setLastFolderPathOpened", value)
     localStorage.setItem(ConfigStorageKey.LastFolderPathOpened, value)
 }

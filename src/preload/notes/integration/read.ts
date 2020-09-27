@@ -17,13 +17,7 @@ export function getNotesInFolder(
     getTextForDisplay: GetTextForDisplayFunc,
     folderPath: string
 ) {
-    console.log("preload - getNotesInFolder()", nodeFsPromises)
     return nodeFsPromises.readdir(folderPath).then((files) => {
-        console.log(
-            `preload - getNotesInFolder() - nodeFsPromises.readdir(${folderPath}).then()`,
-            nodeFsPromises
-        )
-
         const markdownFiles = getMarkdownFilesNamesFromList(files)
 
         return new Promise<NoteListMap>((res, rej) => {
@@ -98,7 +92,6 @@ export function getNoteContent(
     folderPath: string,
     noteFileName: string
 ) {
-    console.log("getNoteContent()", nodePath.join(folderPath, noteFileName))
     return nodeFsPromises.readFile(nodePath.join(folderPath, noteFileName), {
         encoding: "utf8",
     })

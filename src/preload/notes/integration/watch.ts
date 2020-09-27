@@ -6,7 +6,6 @@ export function startNotesWatch(
     nodePath: typeof path,
     folderPath: string
 ) {
-    // TODO: remove listener on previous folder; maybe return an unsub obj with method to unsub
     const watcher = chokidarLib
         .watch(nodePath.join(folderPath, "*.md"))
         .on("ready", () => {

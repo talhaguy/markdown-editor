@@ -58,7 +58,6 @@ export function useCodeMirrorSave(
 
     const startSaveNote = () => {
         // save changes
-        console.log("saving...", folderPath, noteFileName)
         isSavingRef.current = true
         saveNotePromiseRef.current = saveNote(
             folderPath,
@@ -67,12 +66,10 @@ export function useCodeMirrorSave(
         )
         saveNotePromiseRef.current
             .then(() => {
-                console.log("...done saving")
-
                 refreshNotesList()
             })
             .catch((err) => {
-                console.log(err)
+                console.error(err)
             })
             .finally(() => {
                 isSavingRef.current = false
@@ -84,20 +81,16 @@ export function useCodeMirrorSave(
         instance: CodeMirror.Editor,
         changeObj: CodeMirror.EditorChangeLinkedList
     ) => {
-        console.log("batch...")
         fileChanged.current = true
         editorNoteContentRef.current = instance.getValue()
 
         // clear timer if already started
         if (timerRef.current) {
-            console.log("kill old batch")
             clearTimeout(timerRef.current)
         }
         // start timer
         timerRef.current = window.setTimeout(() => {
-            console.log("...done batch")
             // if already performing save, skip
-            console.log("isSavingRef.current", isSavingRef.current)
             if (!isSavingRef.current) {
                 startSaveNote()
             }
@@ -124,13 +117,9 @@ export function useCodeMirrorSave(
                 fileChanged.current
             ) {
                 if (isSavingRef.current) {
-                    saveNotePromiseRef.current
-                        .then(() => {
-                            console.log("...done saving")
-                        })
-                        .catch((err) => {
-                            console.log(err)
-                        })
+                    saveNotePromiseRef.current.catch((err) => {
+                        console.error(err)
+                    })
                 } else {
                     startSaveNote()
                 }

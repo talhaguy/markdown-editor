@@ -15,8 +15,6 @@ import {
 } from "./notes"
 import { getOS, GetOSFunc } from "./utils"
 
-console.log("preload js")
-
 export interface MainToRendererApiMap {
     selectFolder: SelectFolderFunc
     createNewNote: CreateNewNoteFunc

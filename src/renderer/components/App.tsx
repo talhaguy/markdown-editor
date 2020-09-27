@@ -4,7 +4,7 @@ import { Editor } from "./Editor"
 import { AppTitle } from "./AppTitle"
 import { Controls } from "./Controls"
 import { NoteList } from "./NoteList"
-import { MainToRendererApiContext, ConfigContext } from "../providers"
+import { MainToRendererApiContext } from "../providers"
 import { NoteListMap } from "../../shared/models"
 import { useLastFolderPathOpened } from "../hooks"
 
@@ -53,50 +53,40 @@ export function App() {
         selectFolder,
         getNotesInFolder,
         createNewNote,
-        // startNotesWatch,
         getNoteContent,
         deleteNote,
     } = useContext(MainToRendererApiContext)
 
     const onAfterSelectFolder = (folderPath: string) => {
-        console.log("chosen folder", folderPath)
         setFolderPath(folderPath)
         getNotesInDirectory(folderPath)
-        console.log("DEBUG: before setLastFolderPathOpenedInConfig")
         setLastFolderPathOpenedInConfig(folderPath)
     }
 
     const chooseFolder = () => {
-        selectFolder()
-            .then(onAfterSelectFolder)
-            .catch(() => {
-                console.log("canceled")
-            })
+        selectFolder().then(onAfterSelectFolder)
     }
 
     const getNotesInDirectory = (path) => {
-        console.log("getNotesInDirectory()")
         getNotesInFolder(path)
             .then((notesListMap) => {
-                console.log(notesListMap)
                 setNotesListMap(notesListMap)
             })
-            .catch((e) => {
-                console.log("error getting notes")
+            .catch((err) => {
+                console.error("error getting notes", err)
             })
     }
 
     const createNewNoteFile = () => {
         createNewNote(folderPath)
             .then((fileName) => {
-                console.log("done creating note")
                 getNotesInDirectory(folderPath)
 
                 // after new note creation, select it
                 onSelectNote(fileName)
             })
             .catch(() => {
-                console.log("could not create note")
+                console.error("could not create note")
             })
     }
 
@@ -108,13 +98,12 @@ export function App() {
             .then((noteContent) => {
                 setNoteContent(noteContent)
             })
-            .catch((error) => console.log(error))
+            .catch((error) => console.error(error))
     }
 
     const onNoteListDeleteBtnClick = (fileName: string) => {
         deleteNote(folderPath, fileName)
             .then(() => {
-                console.log("deleted note")
                 // if note currently opened was deleted, clear it
                 setSelectedNoteId(null)
                 setNoteContent(null)
@@ -123,16 +112,12 @@ export function App() {
                 getNotesInDirectory(folderPath)
             })
             .catch((error) => {
-                console.log("something went wrong when trying to delete")
+                console.error(
+                    "something went wrong when trying to delete",
+                    error
+                )
             })
     }
-
-    // useEffect(() => {
-    //     if (folderPath) {
-    //         console.log("got folder path, start watch")
-    //         startNotesWatch(folderPath)
-    //     }
-    // }, [folderPath])
 
     useEffect(() => {
         if (lastFolderPathOpened) {

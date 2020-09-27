@@ -3,7 +3,6 @@ import { Dialog, OpenDialogOptions, OpenDialogReturnValue } from "electron"
 
 export const dialogMock: Dialog = {
     showOpenDialog: (options: OpenDialogOptions) => {
-        console.log("I AM A SPYYYYYYYYYYYY")
         const openDialogReturnValue: OpenDialogReturnValue = {
             canceled: false,
             filePaths: [
