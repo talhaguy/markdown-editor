@@ -4,3 +4,4 @@ dist
 coverage
 MarkdownEditor-win32-x64
 MarkdownEditor-darwin-x64
+e2e-temp

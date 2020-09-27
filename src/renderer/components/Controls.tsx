@@ -46,21 +46,26 @@ export function Controls({
     const os = useRef(getOS())
 
     return (
-        <Container>
+        <Container data-testid="controls">
             <FolderRow>
                 <Button
                     onClick={chooseFolder}
                     ariaLabel={translation("choose_folder_button")}
                     image={"folder-24px.svg"}
+                    testId={"choose-folder-btn"}
                 ></Button>
-                <SelectedFolder>
+                <SelectedFolder data-testid="folder-name">
                     {folderName
                         ? getLastPathItem(os.current, folderName)
                         : translation("not_available_short")}
                 </SelectedFolder>
             </FolderRow>
             {folderName ? (
-                <Button onClick={createNewNote} image={"note_add-24px.svg"}>
+                <Button
+                    onClick={createNewNote}
+                    image={"note_add-24px.svg"}
+                    testId="new-note-btn"
+                >
                     {translation("new_note_button")}
                 </Button>
             ) : (

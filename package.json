@@ -6,7 +6,7 @@
     "scripts": {
         "test:main-preload-shared": "jest --config=jest.config.main-preload-shared.js",
         "test:renderer": "jest --config=jest.config.renderer.js",
-        "test:e2e": "cross-env NODE_ENV=spectron jest --config=jest.config.e2e.js --detectOpenHandles",
+        "test:e2e": "sh ./e2e/setup.sh && cross-env NODE_ENV=spectron E2E_TEST_FOLDER=e2e-temp jest --config=jest.config.e2e.js && sh ./e2e/cleanup.sh",
         "test": "npm run test:main-preload-shared && npm run test:renderer",
         "clean": "rm -rf dist",
         "build:renderer": "parcel build ./src/index.html --public-url ./",

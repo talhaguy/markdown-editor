@@ -27,7 +27,7 @@ export function NoteList({
     return (
         <>
             {notes.length > 0 ? (
-                <List>
+                <List data-testid="note-list">
                     {notes.map((note, i) => (
                         <NoteListItem
                             key={i}

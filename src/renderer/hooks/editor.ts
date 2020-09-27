@@ -20,6 +20,11 @@ export function useCodeMirror(noteFileName: string, noteContent: string) {
                 .getWrapperElement()
                 .setAttribute("data-testid", "code-mirror")
             codeMirrorRef.current.focus()
+
+            // give access to e2e tests to modify note content
+            ;(window as any).__e2e = {
+                codeMirror: codeMirrorRef.current,
+            }
         }
 
         return () => {

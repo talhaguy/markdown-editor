@@ -42,6 +42,7 @@ interface ButtonProps {
     ariaLabel?: string
     image?: string
     type?: ButtonType
+    testId?: string
     children?: ReactNode
 }
 
@@ -50,6 +51,7 @@ export function Button({
     ariaLabel,
     image,
     type = ButtonType.Primary,
+    testId = null,
     children = "",
 }: ButtonProps) {
     const Container =
@@ -64,6 +66,7 @@ export function Button({
             aria-label={ariaLabel ? ariaLabel : null}
             href="#"
             role="button"
+            data-testid={testId}
         >
             {image ? <img src={image} data-testid="img" /> : ""}
             {children ? <Label>{children}</Label> : ""}
