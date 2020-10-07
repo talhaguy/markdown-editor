@@ -27,6 +27,12 @@ As a user, I want to see a list of my notes, so that I know which notes have bee
 
 ## Developer Commands
 
+Install Dependencies
+
+```
+npm install
+```
+
 Build
 
 ```
